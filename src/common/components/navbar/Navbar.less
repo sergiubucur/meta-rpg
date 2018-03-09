@@ -5,4 +5,29 @@
 	border-radius: 4px;
 	height: 56px;
 	margin-bottom: 8px;
+	display: flex;
+	color: #fff;
+
+	.navbar-item {
+		width: 320px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		&:hover {
+			background: @background-color;
+		}
+
+		&.active {
+			background: @background-color;
+		}
+
+		&:nth-child(2) {
+			border-left: 1px solid @border-color;
+		}
+
+		&:last-child {
+			border-left: 1px solid @border-color;
+		}
+	}
 }
