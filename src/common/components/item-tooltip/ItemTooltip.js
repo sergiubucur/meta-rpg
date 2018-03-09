@@ -52,11 +52,11 @@ const renderRequirements = (item) => {
 	return (
 		<div>
 			{requirements.length > 0 && <div>Requires:</div>}
-			{requirements.map((req, i) => (
-				<div key={i}>
-					&nbsp;&nbsp;&nbsp;&nbsp;{req}
-				</div>
-			))}
+			<ul>
+				{requirements.map((req, i) => (
+					<li key={i}>{req}</li>
+				))}
+			</ul>
 		</div>
 	);
 };
