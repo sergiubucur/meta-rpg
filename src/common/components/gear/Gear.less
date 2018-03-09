@@ -1,4 +1,40 @@
 @import "../../common.less";
 
 .gear {
+	flex: 1 0 320px;
+	border-bottom: 1px solid @border-color;
+	display: flex;
+
+	.column1 {
+		flex: 1 0 100px;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-around;
+		align-items: flex-end;
+		padding: 80px 0 80px 0;
+	}
+
+	.column2 {
+		flex: 1 0 120px;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-around;
+		align-items: center;
+	}
+
+	.column3 {
+		flex: 1 0 100px;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-around;
+		align-items: flex-start;
+		padding: 80px 0 80px 0;
+	}
+
+	.gear-cell {
+		width: 64px;
+		height: 64px;
+		border: 1px solid @border-color;
+		border-radius: 4px;
+	}
 }
