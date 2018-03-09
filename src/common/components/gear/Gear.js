@@ -19,7 +19,7 @@ class Gear extends Component {
 				</div>
 
 				<div className="column3">
-					<div className="gear-cell trinket"></div>
+					<div className="gear-cell ring"></div>
 					<div className="gear-cell off-hand"></div>
 				</div>
 			</div>
