@@ -1,0 +1,25 @@
+@import "../../common.less";
+
+.inventory {
+	.row {
+		display: flex;
+
+		.cell {
+			width: 64px;
+			height: 64px;
+			border-right: 1px solid @border-color;
+			border-bottom: 1px solid @border-color;
+			border-radius: 4px;
+
+			&:last-child {
+				border-right: 0;
+			}
+		}
+
+		&:last-child {
+			.cell {
+				border-bottom: 0;
+			}
+		}
+	}
+}
