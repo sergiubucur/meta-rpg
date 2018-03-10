@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import "./ItemSlot.less";
-import Item from "../Item";
+import Item from "common/components/item/Item";
 
-export default class ItemSlot extends Component {
+export default class InventorySlot extends Component {
 	static defaultProps = {
 		item: null,
 		onItemDrop: () => {},
@@ -53,7 +52,7 @@ export default class ItemSlot extends Component {
 		const { item } = this.props;
 
 		return (
-			<div className="item-slot" onDrop={this.handleDrop} onDragOver={this.handleDragOver}>
+			<div className="inventory-slot" onDrop={this.handleDrop} onDragOver={this.handleDragOver}>
 				{item && <Item item={item} onItemDragStart={this.handleItemDragStart} />}
 			</div>
 		);

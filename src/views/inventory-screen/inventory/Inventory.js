@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import "./Inventory.less";
-import ItemSlot from "common/components/item/item-slot/ItemSlot";
+import InventorySlot from "./InventorySlot";
 import inventoryService from "common/services/InventoryService";
 
 class Inventory extends Component {
@@ -27,7 +27,7 @@ class Inventory extends Component {
 				{inventory.map((row, rowIndex) => (
 					<div key={rowIndex} className="row">
 						{row.map((cell, cellIndex) => (
-							<ItemSlot
+							<InventorySlot
 								key={cellIndex}
 								item={cell}
 								x={cellIndex}
