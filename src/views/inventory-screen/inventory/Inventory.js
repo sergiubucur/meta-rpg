@@ -1,50 +1,39 @@
 import React, { Component } from "react";
 
 import "./Inventory.less";
-
-const Width = 10;
-const Height = 8;
+import ItemSlot from "common/components/item/item-slot/ItemSlot";
+import inventoryService from "common/services/InventoryService";
 
 class Inventory extends Component {
-	state = {
-		matrix: null
-	}
-
 	componentDidMount() {
-		this.initialize();
+		this.updateListener = inventoryService.events.addListener("update", () => {
+			this.forceUpdate();
+		});
 	}
 
-	initialize() {
-		const matrix = [];
+	componentWillUnmount() {
+		inventoryService.events.removeListener("update", this.updateListener);
+	}
 
-		for (let i = 0; i < Height; i++) {
-			const row = [];
-
-			for (let j = 0; j < Width; j++) {
-				const cell = {};
-
-				row.push(cell);
-			}
-
-			matrix.push(row);
-		}
-
-		this.setState({ matrix });
+	handleItemDrop = (source, destination) => {
+		inventoryService.moveItem(source, destination);
 	}
 
 	render() {
-		const { matrix } = this.state;
-
-		if (!matrix) {
-			return <div></div>;
-		}
+		const { inventory } = inventoryService;
 
 		return (
 			<div className="inventory">
-				{matrix.map((row, rowIndex) => (
+				{inventory.map((row, rowIndex) => (
 					<div key={rowIndex} className="row">
 						{row.map((cell, cellIndex) => (
-							<div key={cellIndex} className="cell"></div>
+							<ItemSlot
+								key={cellIndex}
+								item={cell}
+								type="inventory"
+								x={cellIndex}
+								y={rowIndex}
+								onItemDrop={this.handleItemDrop} />
 						))}
 					</div>
 				))}
