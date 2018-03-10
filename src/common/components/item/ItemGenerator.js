@@ -60,7 +60,7 @@ export default class ItemGenerator {
 	_generateWeapon(item) {
 		item.minDamage = Utils.random(1, 5);
 		item.maxDamage = Utils.random(6, 10);
-		item.requiredLevel = 1;
+		item.requiredLevel = 2;
 
 		return item;
 	}

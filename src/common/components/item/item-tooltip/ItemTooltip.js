@@ -1,68 +1,101 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { Component } from "react";
+import classNames from "classnames";
 
 import "./ItemTooltip.less";
-import ItemType from "../ItemType";
 import BonusAttributeName from "./BonusAttributeName";
+import service from "common/services/ItemTooltipService";
+import { RarityClass } from "common/components/item/ItemRarity";
 
-const renderWeaponAttributes = (item) => (
-	<div>
-		<div>{item.minDamage} - {item.maxDamage} dmg</div>
-	</div>
-);
+export default class ItemTooltip extends Component {
+	componentDidMount() {
+		this.updateListener = service.events.addListener("update", () => {
+			this.forceUpdate();
+		});
+	}
 
-const renderArmorAttributes = (item) => (
-	<div>
-		<div>{item.armor} armor</div>
-	</div>
-);
+	componentWillUnmount() {
+		service.events.removeListener("update", this.updateListener);
+	}
 
-const renderBonusAttributes = (item) => {
-	const attributes = Object.keys(item.bonus).filter(key => item.bonus[key] !== 0).map(key => {
-		return {
-			name: BonusAttributeName[key],
-			value: item.bonus[key]
-		};
-	});
+	renderWeaponAttributes() {
+		const { item } = service;
 
-	return (
-		<div>
-			{attributes.map((attr, i) => (
-				<div key={i}>
-					{attr.value > 0 ? "+" : "-"} {attr.value} {attr.name}
-				</div>
-			))}
-		</div>
-	);
-};
+		return (
+			<div>
+				<div>{item.minDamage} - {item.maxDamage} damage</div>
+			</div>
+		);
+	}
 
-const renderRequirements = (item) => {
-	return (
-		<div>
-			{item.requiredLevel > 0 && `Requires: Level ${item.requiredLevel}`}
-		</div>
-	);
-};
+	renderArmorAttributes() {
+		const { item } = service;
 
-const ItemTooltip = ({ item }) => (
-	<div className="item-tooltip">
-		<strong>{item.name}</strong>
+		return (
+			<div>
+				<div>{item.armor} armor</div>
+			</div>
+		);
+	}
 
-		<br/><br/>
+	renderBonusAttributes() {
+		const { item } = service;
 
-		{item.type === ItemType.Weapon && renderWeaponAttributes(item)}
-		{item.type === ItemType.Armor && renderArmorAttributes(item)}
+		const attributes = Object.keys(item.bonus).filter(key => item.bonus[key] !== 0).map(key => {
+			return {
+				name: BonusAttributeName[key],
+				value: item.bonus[key]
+			};
+		});
 
-		{renderBonusAttributes(item)}
+		return (
+			<div>
+				{attributes.map((attr, i) => (
+					<div key={i}>
+						{attr.value > 0 ? "+" : "-"} {attr.value} {attr.name}
+					</div>
+				))}
+			</div>
+		);
+	}
 
-		<br/>
+	renderRequirements() {
+		const { item } = service;
 
-		{renderRequirements(item)}
-	</div>
-);
+		if (item.requiredLevel === 0) {
+			return null;
+		}
 
-ItemTooltip.propTypes = {
-	item: PropTypes.object.isRequired
-};
+		return (
+			<div>
+				<br />
 
-export default ItemTooltip;
+				{`Requires: Level ${item.requiredLevel}`}
+			</div>
+		);
+	}
+
+	render() {
+		const { item, x, y } = service;
+
+		if (!item) {
+			return null;
+		}
+
+		const rarityClass = item ? RarityClass[item.rarity] : undefined;
+		const className = classNames("item-tooltip", { [rarityClass]: rarityClass });
+
+		return (
+			<div className={className} style={{ left: x, top: y }}>
+				<strong>{item.name}</strong>
+
+				<br /><br />
+
+				{item.slot === "mainHand" && this.renderWeaponAttributes(item)}
+				{item.slot !== "mainHand" && this.renderArmorAttributes(item)}
+
+				{this.renderBonusAttributes(item)}
+				{this.renderRequirements(item)}
+			</div>
+		);
+	}
+}

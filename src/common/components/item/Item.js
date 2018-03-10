@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 
 import "./Item.less";
+import tooltipService from "common/services/ItemTooltipService";
 
 export default class Item extends Component {
 	static defaultProps = {
@@ -18,16 +19,36 @@ export default class Item extends Component {
 		draggable: PropTypes.bool
 	}
 
+	handleDragStart = (e) => {
+		tooltipService.hide();
+		this.props.onItemDragStart(e);
+	}
+
+	handleContextMenu = (e) => {
+		tooltipService.hide();
+		this.props.onRightClick(e);
+	}
+
+	handleMouseEnter = (e) => {
+		tooltipService.show(this.props.item);
+	}
+
+	handleMouseLeave = (e) => {
+		tooltipService.hide();
+	}
+
 	render() {
-		const { item, draggable, onItemDragStart, onRightClick } = this.props;
+		const { item, draggable } = this.props;
 		const className = classNames("item", item.image);
 
 		return (
 			<div
 				className={className}
 				draggable={draggable}
-				onDragStart={onItemDragStart}
-				onContextMenu={onRightClick} />
+				onDragStart={this.handleDragStart}
+				onContextMenu={this.handleContextMenu}
+				onMouseEnter={this.handleMouseEnter}
+				onMouseLeave={this.handleMouseLeave} />
 		);
 	}
 }

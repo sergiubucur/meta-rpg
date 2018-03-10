@@ -1,14 +1,13 @@
 const BonusAttributeName = {
-	minDamage: "min dmg",
-	maxDamage: "max dmg",
-	stamina: "sta",
+	minDamage: "min damage",
+	maxDamage: "max damage",
 	fireResist: "fire resist",
 	frostResist: "frost resist",
 	lightningResist: "lightning resist",
 	armor: "armor",
-	fireDamage: "fire dmg",
-	frostDamage: "frost dmg",
-	lightningDamage: "lightning dmg"
+	fireDamage: "fire damage",
+	frostDamage: "frost damage",
+	lightningDamage: "lightning damage"
 };
 
 export default BonusAttributeName;
