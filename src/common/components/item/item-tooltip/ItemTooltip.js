@@ -86,7 +86,7 @@ export default class ItemTooltip extends Component {
 
 		return (
 			<div className={className} style={{ left: x, top: y }}>
-				<strong>{item.name}</strong>
+				<strong className="name">{item.name}</strong>
 
 				<br /><br />
 

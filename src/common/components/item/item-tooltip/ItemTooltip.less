@@ -8,15 +8,31 @@
 	color: #fff;
 	padding: 10px;
 
+	.name {
+		font-size: 1.2em;
+	}
+
 	&.rarity-common {
 		box-shadow: 0px 0px 10px 0px rgba(64,202,9,0.75);
+
+		.name {
+			color: @rarity-common;
+		}
 	}
 
 	&.rarity-rare {
 		box-shadow: 0px 0px 10px 0px rgba(17,115,196,0.75);
+
+		.name {
+			color: @rarity-rare;
+		}
 	}
 
 	&.rarity-epic {
 		box-shadow: 0px 0px 10px 0px rgba(145,23,161,0.75);
+
+		.name {
+			color: @rarity-epic;
+		}
 	}
 }
