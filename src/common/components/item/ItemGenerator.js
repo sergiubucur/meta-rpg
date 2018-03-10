@@ -3,7 +3,6 @@ import Utils from "common/Utils";
 
 export default class ItemGenerator {
 	generate(itemLevel, slot, rarity) {
-		const isWeapon = slot === "mainHand";
 		if (!rarity) {
 			rarity = Utils.random(1, 3);
 		}
@@ -46,12 +45,20 @@ export default class ItemGenerator {
 		item.name = slotInfo.names[0];
 		item.image = `${item.slot}${Utils.random(slotInfo.image.min, slotInfo.image.max)}`;
 
-		if (isWeapon) {
-			Object.assign(item, baseWeapon);
-			this._generateWeapon(item);
-		} else {
-			Object.assign(item, baseArmor);
-			this._generateArmor(item);
+		switch (item.slot) {
+			case "mainHand":
+				Object.assign(item, baseWeapon);
+				this._generateWeapon(item);
+				break;
+
+			case "ring":
+				this._generateRing(item);
+				break;
+
+			default:
+				Object.assign(item, baseArmor);
+				this._generateArmor(item);
+				break;
 		}
 
 		return item;
@@ -61,13 +68,13 @@ export default class ItemGenerator {
 		item.minDamage = Utils.random(1, 5);
 		item.maxDamage = Utils.random(6, 10);
 		item.requiredLevel = 2;
+	}
 
-		return item;
+	_generateRing(item) {
+		item.bonus.fireResist = 5;
 	}
 
 	_generateArmor(item) {
 		item.armor = Utils.random(1, 10);
-
-		return item;
 	}
 }

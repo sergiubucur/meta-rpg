@@ -91,7 +91,7 @@ export default class ItemTooltip extends Component {
 				<br /><br />
 
 				{item.slot === "mainHand" && this.renderWeaponAttributes(item)}
-				{item.slot !== "mainHand" && this.renderArmorAttributes(item)}
+				{item.slot !== "mainHand" && item.slot !== "ring" && this.renderArmorAttributes(item)}
 
 				{this.renderBonusAttributes(item)}
 				{this.renderRequirements(item)}
