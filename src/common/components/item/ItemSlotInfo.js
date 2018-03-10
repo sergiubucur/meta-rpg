@@ -3,31 +3,31 @@ const ItemSlotInfo = {
 		names: ["Crown"],
 		image: {
 			min: 1,
-			max: 1
+			max: 4
 		}
 	},
 
 	chest: {
 		names: ["Breastplate"],
 		image: {
-			min: 1,
-			max: 1
+			min: 0,
+			max: 4
 		}
 	},
 
 	legs: {
 		names: ["Leggings"],
 		image: {
-			min: 1,
-			max: 1
+			min: 0,
+			max: 4
 		}
 	},
 
 	feet: {
 		names: ["Greaves"],
 		image: {
-			min: 1,
-			max: 1
+			min: 0,
+			max: 4
 		}
 	},
 
@@ -35,15 +35,15 @@ const ItemSlotInfo = {
 		names: ["Band"],
 		image: {
 			min: 1,
-			max: 1
+			max: 3
 		}
 	},
 
 	hands: {
 		names: ["Gauntlets"],
 		image: {
-			min: 1,
-			max: 1
+			min: 0,
+			max: 4
 		}
 	},
 
@@ -51,7 +51,7 @@ const ItemSlotInfo = {
 		names: ["Sword"],
 		image: {
 			min: 1,
-			max: 1
+			max: 3
 		}
 	},
 
@@ -59,7 +59,7 @@ const ItemSlotInfo = {
 		names: ["Shield"],
 		image: {
 			min: 1,
-			max: 1
+			max: 2
 		}
 	}
 };
