@@ -71,7 +71,15 @@ export default class ItemGenerator {
 	}
 
 	_generateRing(item) {
-		item.bonus.fireResist = 5;
+		item.bonus.minDamage = Utils.random(0, 5);
+		item.bonus.maxDamage = Utils.random(0, 5);
+		item.bonus.fireResist = Utils.random(0, 5);
+		item.bonus.frostResist = Utils.random(0, 5);
+		item.bonus.lightningResist = Utils.random(0, 5);
+		item.bonus.armor = Utils.random(0, 5);
+		item.bonus.fireDamage = Utils.random(0, 5);
+		item.bonus.frostDamage = Utils.random(0, 5);
+		item.bonus.lightningDamage = Utils.random(0, 5);
 	}
 
 	_generateArmor(item) {
