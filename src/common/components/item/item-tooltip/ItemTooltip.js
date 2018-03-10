@@ -3,42 +3,49 @@ import classNames from "classnames";
 
 import "./ItemTooltip.less";
 import BonusAttributeName from "./BonusAttributeName";
-import service from "common/services/ItemTooltipService";
+import SlotName from "./SlotName";
+import tooltipService from "common/services/ItemTooltipService";
+import characterService from "common/services/CharacterService";
 import { RarityClass } from "common/components/item/ItemRarity";
 
 export default class ItemTooltip extends Component {
 	componentDidMount() {
-		this.updateListener = service.events.addListener("update", () => {
+		this.tooltipUpdateListener = tooltipService.events.addListener("update", () => {
+			this.forceUpdate();
+		});
+
+		this.characterUpdateListener = characterService.events.addListener("update", () => {
 			this.forceUpdate();
 		});
 	}
 
 	componentWillUnmount() {
-		service.events.removeListener("update", this.updateListener);
+		tooltipService.events.removeListener("update", this.tooltipUpdateListener);
+		characterService.events.removeListener("update", this.characterUpdateListener);
 	}
 
 	renderWeaponAttributes() {
-		const { item } = service;
+		const { item } = tooltipService;
 
 		return (
 			<div>
-				<div>{item.minDamage} - {item.maxDamage} damage</div>
+				<div>{item.minDamage} - {item.maxDamage} Damage</div>
 			</div>
 		);
 	}
 
 	renderArmorAttributes() {
-		const { item } = service;
+		const { item } = tooltipService;
 
 		return (
 			<div>
-				<div>{item.armor} armor</div>
+				<div>{item.armor} Armor</div>
 			</div>
 		);
 	}
 
 	renderBonusAttributes() {
-		const { item } = service;
+		const { item } = tooltipService;
 
 		const attributes = Object.keys(item.bonus).filter(key => item.bonus[key] !== 0).map(key => {
 			return {
@@ -59,23 +66,25 @@ export default class ItemTooltip extends Component {
 	}
 
 	renderRequirements() {
-		const { item } = service;
+		const { item } = tooltipService;
 
 		if (item.requiredLevel === 0) {
 			return null;
 		}
 
+		const className = classNames({ error: characterService.level < item.requiredLevel });
+
 		return (
-			<div>
+			<div className={className}>
 				<br />
 
-				{`Requires: Level ${item.requiredLevel}`}
+				{`Requires Level ${item.requiredLevel}`}
 			</div>
 		);
 	}
 
 	render() {
-		const { item, x, y } = service;
+		const { item, x, y } = tooltipService;
 
 		if (!item) {
 			return null;
@@ -86,9 +95,11 @@ export default class ItemTooltip extends Component {
 
 		return (
 			<div className={className} style={{ left: x, top: y }}>
-				<strong className="name">{item.name}</strong>
+				<div className="name">{item.name}</div>
+				<div>Item Level {item.itemLevel}</div>
+				<div>{SlotName[item.slot]}</div>
 
-				<br /><br />
+				<br />
 
 				{item.slot === "mainHand" && this.renderWeaponAttributes(item)}
 				{item.slot !== "mainHand" && item.slot !== "ring" && this.renderArmorAttributes(item)}

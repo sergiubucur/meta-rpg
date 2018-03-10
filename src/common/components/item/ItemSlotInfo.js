@@ -32,7 +32,7 @@ const ItemSlotInfo = {
 	},
 
 	ring: {
-		names: ["Ring"],
+		names: ["Band"],
 		image: {
 			min: 1,
 			max: 1

@@ -1,6 +1,7 @@
 import EventDispatcher from "simple-event-dispatcher";
 
 import ItemGenerator from "common/components/item/ItemGenerator";
+import characterService from "./CharacterService";
 
 export const InventoryWidth = 10;
 export const InventoryHeight = 8;
@@ -77,10 +78,13 @@ class InventoryService {
 
 		if (src.type === "inventory" && dest.type === "gear") {
 			let aux = this.inventory[src.y][src.x];
-			this.inventory[src.y][src.x] = this.gear[aux.slot];
-			this.gear[aux.slot] = aux;
 
-			this.events.dispatch("update");
+			if (aux.requiredLevel <= characterService.level) {
+				this.inventory[src.y][src.x] = this.gear[aux.slot];
+				this.gear[aux.slot] = aux;
+
+				this.events.dispatch("update");
+			}
 		}
 	}
 }
