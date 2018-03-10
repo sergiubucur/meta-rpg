@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 
 import "./InventoryScreen.less";
-import Gear from "common/components/gear/Gear";
-import Stats from "common/components/stats/Stats";
-import Inventory from "common/components/inventory/Inventory";
+import Gear from "./gear/Gear";
+import Stats from "./stats/Stats";
+import Inventory from "./inventory/Inventory";
 
 export default class InventoryScreen extends Component {
 	render() {

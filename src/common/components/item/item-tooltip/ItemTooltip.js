@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import "./ItemTooltip.less";
-import ItemType from "common/item/ItemType";
+import ItemType from "../ItemType";
 import BonusAttributeName from "./BonusAttributeName";
 import RequirementName from "./RequirementName";
 
