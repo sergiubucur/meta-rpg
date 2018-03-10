@@ -9,26 +9,33 @@
 	color: #fff;
 	overflow: hidden;
 
-	.navbar-item {
-		width: 320px;
+	.status-bar {
+		flex: 1 0 auto;
 		display: flex;
-		justify-content: center;
 		align-items: center;
+		overflow: hidden;
+		padding-left: 36px;
+	}
 
-		&:hover {
-			background: @background-color;
-		}
+	.menu {
+		flex: 0 1 383px;
+		display: flex;
+		overflow: hidden;
 
-		&.active {
-			background: @background-color;
-		}
-
-		&:nth-child(2) {
+		.navbar-item {
+			width: 128px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
 			border-left: 1px solid @border-color;
-		}
 
-		&:last-child {
-			border-left: 1px solid @border-color;
+			&:hover {
+				background: @background-color;
+			}
+
+			&.active {
+				background: @background-color;
+			}
 		}
 	}
 }

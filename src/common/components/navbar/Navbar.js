@@ -8,9 +8,14 @@ class Navbar extends Component {
 	render() {
 		return (
 			<div className="navbar">
-				<NavbarItem item={{ name: "Inventory", route: "" }} />
-				<NavbarItem item={{ name: "Dungeon Run", route: "/dungeon-run" }} />
-				<NavbarItem item={{ name: "Vendor", route: "/vendor" }} />
+				<div className="status-bar">
+					Level 1
+				</div>
+				<div className="menu">
+					<NavbarItem item={{ name: "Inventory", route: "" }} />
+					<NavbarItem item={{ name: "Quest Log", route: "/quest-log" }} />
+					<NavbarItem item={{ name: "Vendor", route: "/vendor" }} />
+				</div>
 			</div>
 		);
 	}
