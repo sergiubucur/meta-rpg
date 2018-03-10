@@ -80,6 +80,8 @@ export default class ItemGenerator {
 		item.bonus.fireDamage = Utils.random(0, 5);
 		item.bonus.frostDamage = Utils.random(0, 5);
 		item.bonus.lightningDamage = Utils.random(0, 5);
+
+		item.requiredLevel = 3;
 	}
 
 	_generateArmor(item) {
