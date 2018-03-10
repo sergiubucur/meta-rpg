@@ -15,11 +15,28 @@ class Gear extends Component {
 		inventoryService.events.removeListener("update", this.updateListener);
 	}
 
+	handleDragOver = (e) => {
+		e.preventDefault();
+	}
+
+	handleDrop = (e) => {
+		e.preventDefault();
+
+		let data = e.dataTransfer.getData("text");
+		if (data) {
+			data = JSON.parse(data);
+
+			inventoryService.moveItem(data, {
+				type: "gear"
+			});
+		}
+	}
+
 	render() {
 		const { gear } = inventoryService;
 
 		return (
-			<div className="gear">
+			<div className="gear" onDragOver={this.handleDragOver} onDrop={this.handleDrop}>
 				<div className="column1">
 					<GearSlot slot="hands" item={gear.hands} />
 					<GearSlot slot="mainHand" item={gear.hands} />

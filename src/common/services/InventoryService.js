@@ -21,8 +21,10 @@ class InventoryService {
 	constructor() {
 		this.buildMatrix();
 
-		this.gear.head = { id: 1 };
-		this.inventory[1][2] = { id: 2 };
+		this.gear.head = { slot: "head", image: "head1" };
+		this.gear.chest = { slot: "chest", image: "chest1" };
+
+		this.inventory[1][2] = { slot: "head", image: "head4"};
 	}
 
 	buildMatrix() {
@@ -47,15 +49,29 @@ class InventoryService {
 			let aux = this.inventory[src.y][src.x];
 			this.inventory[src.y][src.x] = this.inventory[dest.y][dest.x];
 			this.inventory[dest.y][dest.x] = aux;
+
+			this.events.dispatch("update");
 		}
 
 		if (src.type === "gear" && dest.type === "inventory") {
-			let aux = this.gear[src.slot];
-			this.gear[src.slot] = this.inventory[dest.y][dest.x];
-			this.inventory[dest.y][dest.x] = aux;
+			let srcItem = this.gear[src.slot];
+			let destItem = this.inventory[dest.y][dest.x];
+
+			if (destItem === null || (srcItem.slot === destItem.slot)) {
+				this.gear[src.slot] = destItem;
+				this.inventory[dest.y][dest.x] = srcItem;
+
+				this.events.dispatch("update");
+			}
 		}
 
-		this.events.dispatch("update");
+		if (src.type === "inventory" && dest.type === "gear") {
+			let aux = this.inventory[src.y][src.x];
+			this.inventory[src.y][src.x] = this.gear[aux.slot];
+			this.gear[aux.slot] = aux;
+
+			this.events.dispatch("update");
+		}
 	}
 }
 
