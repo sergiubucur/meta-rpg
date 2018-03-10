@@ -14,7 +14,6 @@ export default class ItemSlot extends Component {
 
 	static propTypes = {
 		item: PropTypes.object,
-		type: PropTypes.string.isRequired,
 		onItemDrop: PropTypes.func.isRequired,
 		x: PropTypes.number,
 		y: PropTypes.number
@@ -22,7 +21,7 @@ export default class ItemSlot extends Component {
 
 	handleItemDragStart = (e) => {
 		const data = {
-			type: this.props.type,
+			type: "inventory",
 			x: this.props.x,
 			y: this.props.y
 		};
@@ -43,7 +42,7 @@ export default class ItemSlot extends Component {
 			data = JSON.parse(data);
 
 			this.props.onItemDrop(data, {
-				type: this.props.type,
+				type: "inventory",
 				x: this.props.x,
 				y: this.props.y
 			});

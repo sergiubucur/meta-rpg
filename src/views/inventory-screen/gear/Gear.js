@@ -1,26 +1,40 @@
 import React, { Component } from "react";
 
 import "./Gear.less";
+import inventoryService from "common/services/InventoryService";
+import GearSlot from "./GearSlot";
 
 class Gear extends Component {
+	componentDidMount() {
+		this.updateListener = inventoryService.events.addListener("update", () => {
+			this.forceUpdate();
+		});
+	}
+
+	componentWillUnmount() {
+		inventoryService.events.removeListener("update", this.updateListener);
+	}
+
 	render() {
+		const { gear } = inventoryService;
+
 		return (
 			<div className="gear">
 				<div className="column1">
-					<div className="gear-cell hands"></div>
-					<div className="gear-cell main-hand"></div>
+					<GearSlot slot="hands" item={gear.hands} />
+					<GearSlot slot="mainHand" item={gear.hands} />
 				</div>
 
 				<div className="column2">
-					<div className="gear-cell head"></div>
-					<div className="gear-cell chest"></div>
-					<div className="gear-cell legs"></div>
-					<div className="gear-cell feet"></div>
+					<GearSlot slot="head" item={gear.head} />
+					<GearSlot slot="chest" item={gear.chest} />
+					<GearSlot slot="legs" item={gear.legs} />
+					<GearSlot slot="feet" item={gear.feet} />
 				</div>
 
 				<div className="column3">
-					<div className="gear-cell ring"></div>
-					<div className="gear-cell off-hand"></div>
+					<GearSlot slot="ring" item={gear.ring} />
+					<GearSlot slot="offHand" item={gear.offHand} />
 				</div>
 			</div>
 		);

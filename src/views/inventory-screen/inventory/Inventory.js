@@ -30,7 +30,6 @@ class Inventory extends Component {
 							<ItemSlot
 								key={cellIndex}
 								item={cell}
-								type="inventory"
 								x={cellIndex}
 								y={rowIndex}
 								onItemDrop={this.handleItemDrop} />
