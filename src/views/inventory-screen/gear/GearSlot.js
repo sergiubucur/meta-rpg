@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 
 import Item from "common/components/item/Item";
+import { RarityClass } from "common/components/item/ItemRarity";
 
 export default class GearSlot extends Component {
 	static defaultProps = {
@@ -26,7 +27,8 @@ export default class GearSlot extends Component {
 
 	render() {
 		const { item } = this.props;
-		const className = classNames("gear-slot", this.props.slot);
+		const rarityClass = item ? RarityClass[item.rarity] : undefined;
+		const className = classNames("gear-slot", this.props.slot, { [rarityClass]: rarityClass });
 
 		return (
 			<div className={className}>

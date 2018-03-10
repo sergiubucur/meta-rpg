@@ -6,23 +6,28 @@ import "./Item.less";
 
 export default class Item extends Component {
 	static defaultProps = {
-		onItemDragStart: () => {}
+		onRightClick: () => {},
+		onItemDragStart: () => {},
+		draggable: true
 	}
 
 	static propTypes = {
 		item: PropTypes.object.isRequired,
-		onItemDragStart: PropTypes.func.isRequired
+		onRightClick: PropTypes.func,
+		onItemDragStart: PropTypes.func,
+		draggable: PropTypes.bool
 	}
 
 	render() {
-		const { item } = this.props;
+		const { item, draggable, onItemDragStart, onRightClick } = this.props;
 		const className = classNames("item", item.image);
 
 		return (
 			<div
 				className={className}
-				draggable
-				onDragStart={this.props.onItemDragStart} />
+				draggable={draggable}
+				onDragStart={onItemDragStart}
+				onContextMenu={onRightClick} />
 		);
 	}
 }

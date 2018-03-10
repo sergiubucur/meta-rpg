@@ -9,6 +9,12 @@ class App extends Component {
 		children: PropTypes.object.isRequired
 	}
 
+	componentDidMount() {
+		document.addEventListener("contextmenu", (e) => {
+			e.preventDefault();
+		}, false);
+	}
+
 	render() {
 		return (
 			<div className="app-container">

@@ -39,7 +39,7 @@ class Gear extends Component {
 			<div className="gear" onDragOver={this.handleDragOver} onDrop={this.handleDrop}>
 				<div className="column1">
 					<GearSlot slot="hands" item={gear.hands} />
-					<GearSlot slot="mainHand" item={gear.hands} />
+					<GearSlot slot="mainHand" item={gear.mainHand} />
 				</div>
 
 				<div className="column2">

@@ -4,4 +4,9 @@ const ItemRarity = {
 	Epic: 3
 };
 
+export const RarityClass = {};
+RarityClass[ItemRarity.Common] = "rarity-common";
+RarityClass[ItemRarity.Rare] = "rarity-rare";
+RarityClass[ItemRarity.Epic] = "rarity-epic";
+
 export default ItemRarity;

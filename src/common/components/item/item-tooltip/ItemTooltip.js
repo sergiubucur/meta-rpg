@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import "./ItemTooltip.less";
 import ItemType from "../ItemType";
 import BonusAttributeName from "./BonusAttributeName";
-import RequirementName from "./RequirementName";
 
 const renderWeaponAttributes = (item) => (
 	<div>
@@ -38,25 +37,9 @@ const renderBonusAttributes = (item) => {
 };
 
 const renderRequirements = (item) => {
-	const requirements = Object.keys(item.requirements).filter(key => item.requirements[key] > 0).map(key => {
-		const name = RequirementName[key];
-		const value = item.requirements[key];
-
-		if (key === "level") {
-			return `${name} ${value}`;
-		}
-
-		return `${value} ${name}`;
-	});
-
 	return (
 		<div>
-			{requirements.length > 0 && <div>Requires:</div>}
-			<ul>
-				{requirements.map((req, i) => (
-					<li key={i}>{req}</li>
-				))}
-			</ul>
+			{item.requiredLevel > 0 && `Requires: Level ${item.requiredLevel}`}
 		</div>
 	);
 };

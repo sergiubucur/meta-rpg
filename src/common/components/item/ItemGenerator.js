@@ -1,19 +1,23 @@
-import ItemType from "./ItemType";
+import ItemSlotInfo from "./ItemSlotInfo";
+import Utils from "common/Utils";
 
 export default class ItemGenerator {
-	generateItem(itemLevel, itemType, rarity) {
+	generate(itemLevel, slot, rarity) {
+		const isWeapon = slot === "mainHand";
+		if (!rarity) {
+			rarity = Utils.random(1, 3);
+		}
+
 		const baseItem = {
 			itemLevel,
-			type: itemType,
-			rarity
+			slot,
+			rarity,
+			requiredLevel: 0
 		};
 
 		const baseBonus = {
 			minDamage: 0,
 			maxDamage: 0,
-			strength: 0,
-			dexterity: 0,
-			stamina: 0,
 			fireResist: 0,
 			frostResist: 0,
 			lightningResist: 0,
@@ -21,12 +25,6 @@ export default class ItemGenerator {
 			fireDamage: 0,
 			frostDamage: 0,
 			lightningDamage: 0
-		};
-
-		const baseRequirements = {
-			level: 0,
-			strength: 0,
-			dexterity: 0
 		};
 
 		const baseWeapon = {
@@ -40,12 +38,15 @@ export default class ItemGenerator {
 
 		const item = {
 			...baseItem,
-
-			bonus: baseBonus,
-			requirements: baseRequirements
+			bonus: baseBonus
 		};
 
-		if (itemType === ItemType.Weapon) {
+		const slotInfo = ItemSlotInfo[item.slot];
+
+		item.name = slotInfo.names[0];
+		item.image = `${item.slot}${Utils.random(slotInfo.image.min, slotInfo.image.max)}`;
+
+		if (isWeapon) {
 			Object.assign(item, baseWeapon);
 			this._generateWeapon(item);
 		} else {
@@ -53,35 +54,20 @@ export default class ItemGenerator {
 			this._generateArmor(item);
 		}
 
-		item.name = this._generateName(itemLevel, itemType, rarity);
-
 		return item;
 	}
 
-	_generateName(itemLevel, itemType, rarity) {
-		switch (itemType) {
-			case ItemType.Weapon:
-				return "Sword";
-
-			case ItemType.Armor:
-				return "Breastplate";
-
-			default:
-				return "Unknown";
-		}
-	}
-
 	_generateWeapon(item) {
-		item.minDamage = 6;
-		item.maxDamage = 16;
-		item.bonus.strength = 5;
-		item.requirements.level = 1;
-		item.requirements.strength = 10;
+		item.minDamage = Utils.random(1, 5);
+		item.maxDamage = Utils.random(6, 10);
+		item.requiredLevel = 1;
 
 		return item;
 	}
 
 	_generateArmor(item) {
+		item.armor = Utils.random(1, 10);
+
 		return item;
 	}
 }

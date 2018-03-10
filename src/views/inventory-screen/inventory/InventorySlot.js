@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import classNames from "classnames";
 
 import Item from "common/components/item/Item";
+import { RarityClass } from "common/components/item/ItemRarity";
 
 export default class InventorySlot extends Component {
 	static defaultProps = {
@@ -48,12 +50,28 @@ export default class InventorySlot extends Component {
 		}
 	}
 
+	handleItemRightClick = (e) => {
+		this.props.onItemDrop({
+			type: "inventory",
+			x: this.props.x,
+			y: this.props.y
+		}, {
+			type: "gear"
+		});
+	}
+
 	render() {
 		const { item } = this.props;
+		const rarityClass = item ? RarityClass[item.rarity] : undefined;
+		const className = classNames("inventory-slot", { [rarityClass]: rarityClass });
 
 		return (
-			<div className="inventory-slot" onDrop={this.handleDrop} onDragOver={this.handleDragOver}>
-				{item && <Item item={item} onItemDragStart={this.handleItemDragStart} />}
+			<div className={className} onDrop={this.handleDrop} onDragOver={this.handleDragOver}>
+				{item &&
+					<Item
+						item={item}
+						onItemDragStart={this.handleItemDragStart}
+						onRightClick={this.handleItemRightClick} />}
 			</div>
 		);
 	}
