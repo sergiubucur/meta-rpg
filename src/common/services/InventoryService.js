@@ -1,4 +1,5 @@
 import EventDispatcher from "simple-event-dispatcher";
+import Utils from "common/Utils";
 
 import ItemGenerator from "common/components/item/ItemGenerator";
 import characterService from "./CharacterService";
@@ -28,14 +29,15 @@ class InventoryService {
 		this.gear.head = this.itemGenerator.generate(1, "head");
 		this.gear.chest = this.itemGenerator.generate(1, "chest");
 
-		this.inventory[0][0] = this.itemGenerator.generate(1, "head");
-		this.inventory[0][1] = this.itemGenerator.generate(1, "chest");
-		this.inventory[0][2] = this.itemGenerator.generate(1, "legs");
-		this.inventory[0][3] = this.itemGenerator.generate(1, "feet");
-		this.inventory[0][4] = this.itemGenerator.generate(1, "hands");
-		this.inventory[0][5] = this.itemGenerator.generate(1, "ring");
-		this.inventory[0][6] = this.itemGenerator.generate(1, "mainHand");
-		this.inventory[0][7] = this.itemGenerator.generate(1, "offHand");
+		const slots = Object.keys(this.gear);
+
+		for (let i = 0; i < InventoryHeight; i++) {
+			for (let j = 0; j < InventoryWidth; j++) {
+				if (Math.random() < 0.33) {
+					this.inventory[i][j] = this.itemGenerator.generate(1, slots[Utils.random(0, 7)]);
+				}
+			}
+		}
 	}
 
 	buildMatrix() {
