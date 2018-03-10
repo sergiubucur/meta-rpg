@@ -15,8 +15,8 @@ class Inventory extends Component {
 		inventoryService.events.removeListener("update", this.updateListener);
 	}
 
-	handleItemDrop = (source, destination) => {
-		inventoryService.moveItem(source, destination);
+	handleItemDrop = (src, dest) => {
+		inventoryService.moveItem(src, dest);
 	}
 
 	render() {

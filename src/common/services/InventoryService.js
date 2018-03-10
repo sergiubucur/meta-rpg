@@ -30,10 +30,10 @@ class InventoryService {
 		this.inventory = matrix;
 	}
 
-	moveItem(source, destination) {
-		let aux = this.inventory[source.y][source.x];
-		this.inventory[source.y][source.x] = this.inventory[destination.y][destination.x];
-		this.inventory[destination.y][destination.x] = aux;
+	moveItem(src, dest) {
+		let aux = this.inventory[src.y][src.x];
+		this.inventory[src.y][src.x] = this.inventory[dest.y][dest.x];
+		this.inventory[dest.y][dest.x] = aux;
 
 		this.events.dispatch("update");
 	}
