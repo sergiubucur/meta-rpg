@@ -116,6 +116,31 @@ class InventoryService {
 		this.itemDragEnd();
 	}
 
+	buyItem(item) {
+		const location = this.hasRoom();
+
+		if (!location) {
+			return false;
+		}
+
+		this.inventory[location.y][location.x] = item;
+		this.events.dispatch("update");
+
+		return true;
+	}
+
+	hasRoom() {
+		for (let i = 0; i < InventoryHeight; i++) {
+			for (let j = 0; j < InventoryWidth; j++) {
+				if (this.inventory[i][j] === null) {
+					return { x: j, y: i };
+				}
+			}
+		}
+
+		return false;
+	}
+
 	cheatGiveItems() {
 		const itemLevel = characterService.level;
 

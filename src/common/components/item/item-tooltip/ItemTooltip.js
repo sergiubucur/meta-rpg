@@ -66,15 +66,15 @@ export default class ItemTooltip extends Component {
 	}
 
 	renderRequirementsAndValue() {
-		const { item } = tooltipService;
+		const { item, vendor } = tooltipService;
 		const className = classNames({ error: characterService.level < item.requiredLevel });
 
 		return (
 			<div>
-				<br />
+				{(item.requiredLevel > 1 || !vendor) && <br />}
 
 				<div className={className}>{item.requiredLevel > 1 && `Requires Level ${item.requiredLevel}`}</div>
-				<div className="value">Value:&nbsp;&nbsp;{item.value} gold</div>
+				{!vendor && <div className="value">Value:&nbsp;&nbsp;{item.value} gold</div>}
 			</div>
 		);
 	}

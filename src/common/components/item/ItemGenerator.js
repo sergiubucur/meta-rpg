@@ -58,6 +58,7 @@ export default class ItemGenerator {
 
 		this._addBonusStats(item);
 		item.value = this._calculateValue(item);
+		item.vendorValue = item.value * 4;
 
 		return item;
 	}

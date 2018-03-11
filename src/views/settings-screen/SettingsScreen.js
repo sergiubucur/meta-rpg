@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import "./SettingsScreen.less";
 import characterService from "common/services/CharacterService";
 import inventoryService from "common/services/InventoryService";
+import vendorService from "common/services/VendorService";
 
 export default class SettingsScreen extends Component {
 	handleLevelUpClick = () => {
@@ -15,6 +16,10 @@ export default class SettingsScreen extends Component {
 
 	handleGiveItemsClick = () => {
 		inventoryService.cheatGiveItems();
+	}
+
+	handleResetVendorClick = () => {
+		vendorService.cheatResetItems();
 	}
 
 	render() {
@@ -35,6 +40,7 @@ export default class SettingsScreen extends Component {
 						<button type="button" onClick={this.handleLevelUpClick}>Level Up</button>
 						<button type="button" onClick={this.handleGiveGoldClick}>Give Gold</button>
 						<button type="button" onClick={this.handleGiveItemsClick}>Give Items</button>
+						<button type="button" onClick={this.handleResetVendorClick}>Reset Vendor</button>
 					</div>
 				</div>
 
