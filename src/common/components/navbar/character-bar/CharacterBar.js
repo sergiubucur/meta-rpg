@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import "./CharacterBar.less";
 import characterService from "common/services/CharacterService";
 
-const AnimationDuration = 2000;
+const AnimationDuration = 1000;
 
 export default class CharacterBar extends Component {
 	state = {
