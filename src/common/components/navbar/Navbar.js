@@ -15,6 +15,7 @@ class Navbar extends Component {
 					<NavbarItem item={{ name: "Inventory", route: "" }} />
 					<NavbarItem item={{ name: "Quest Log", route: "/quest-log" }} />
 					<NavbarItem item={{ name: "Vendor", route: "/vendor" }} />
+					<NavbarItem item={{ name: "Settings", route: "/settings" }} />
 				</div>
 			</div>
 		);

@@ -6,7 +6,6 @@ export default class QuestLogScreen extends Component {
 	render() {
 		return (
 			<div className="quest-log-screen">
-				Quest Log
 			</div>
 		);
 	}

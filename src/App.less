@@ -59,3 +59,25 @@ ul {
 .error {
 	color: @error-color;
 }
+
+button {
+	border: 1px solid @border-color;
+	border-radius: 4px;
+	background: #000;
+	color: #fff;
+	width: 128px;
+	height: 54px;
+	font-size: 16px;
+
+	&:hover {
+		background: @background-color;
+	}
+
+	&:focus {
+		outline: 0;
+	}
+
+	&:active {
+		box-shadow: inset 0px 0px 10px 0px rgba(255,255,255,1);
+	}
+}

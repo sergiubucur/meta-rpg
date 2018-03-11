@@ -18,20 +18,14 @@
 	}
 
 	.menu {
-		flex: 0 1 384px;
+		flex: 0 1 auto;
 		display: flex;
 		overflow: hidden;
 
 		.navbar-item {
-			width: 128px;
-			display: flex;
-			justify-content: center;
-			align-items: center;
+			border: 0;
 			border-left: 1px solid @border-color;
-
-			&:hover {
-				background: @background-color;
-			}
+			border-radius: 0;
 
 			&.active {
 				background: @background-color;

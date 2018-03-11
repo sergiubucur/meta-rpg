@@ -9,9 +9,9 @@ const NavbarItem = ({ item, routes, router }) => {
 	const className = classNames("navbar-item", { active: Utils.getCurrentRoute(routes) === item.route });
 
 	return (
-		<div className={className} onClick={() => router.push(item.route)}>
+		<button type="button" className={className} onClick={() => router.push(item.route)}>
 			{item.name}
-		</div>
+		</button>
 	);
 };
 
