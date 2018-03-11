@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import "./App.less";
 import Navbar from "common/components/navbar/Navbar";
 import ItemTooltip from "common/components/item/item-tooltip/ItemTooltip";
+// import "common/NumberTool";
 
 class App extends Component {
 	static propTypes = {
