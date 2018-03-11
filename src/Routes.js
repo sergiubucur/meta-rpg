@@ -1,5 +1,5 @@
 import React from "react";
-import { Router, Route, IndexRoute, browserHistory } from "react-router-3";
+import { Router, Route, IndexRoute, hashHistory } from "react-router-3";
 
 import App from "./App";
 import InventoryScreen from "views/inventory-screen/InventoryScreen";
@@ -9,7 +9,7 @@ import SettingsScreen from "views/settings-screen/SettingsScreen";
 
 const Routes = () => {
 	return (
-		<Router history={browserHistory}>
+		<Router history={hashHistory}>
 			<Route path="/" component={App}>
 				<IndexRoute component={InventoryScreen} />
 
