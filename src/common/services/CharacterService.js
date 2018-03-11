@@ -69,7 +69,6 @@ class CharacterService {
 			});
 		});
 
-		console.log(this.stats);
 		this.events.dispatch("statsUpdate");
 	}
 
