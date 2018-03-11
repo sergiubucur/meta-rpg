@@ -19,9 +19,9 @@ RarityStatCoeff[ItemRarity.Common] = 1;
 RarityStatCoeff[ItemRarity.Rare] = 1.25;
 RarityStatCoeff[ItemRarity.Epic] = 1.5;
 
-export const RarityMaxBonus = {};
-RarityMaxBonus[ItemRarity.Common] = 1;
-RarityMaxBonus[ItemRarity.Rare] = 2;
-RarityMaxBonus[ItemRarity.Epic] = 4;
+export const RarityBonus = {};
+RarityBonus[ItemRarity.Common] = { min: 0, max: 1 };
+RarityBonus[ItemRarity.Rare] = { min: 1, max: 2 };
+RarityBonus[ItemRarity.Epic] = { min: 2, max: 4 };
 
 export default ItemRarity;

@@ -1,9 +1,9 @@
 import ItemSlotInfo from "./ItemSlotInfo";
-import ItemRarity, { RarityCost, RarityStatCoeff, RarityMaxBonus } from "./ItemRarity";
+import ItemRarity, { RarityCost, RarityStatCoeff, RarityBonus } from "./ItemRarity";
 import Utils from "common/Utils";
 
 export default class ItemGenerator {
-	generate(itemLevel, slot, rarity, canBoost = true) {
+	generate(itemLevel, slot, rarity = ItemRarity.Common, canBoost = true) {
 		if (canBoost) {
 			rarity = this._boostRarity(rarity);
 			itemLevel = this._boostItemLevel(itemLevel);
@@ -130,7 +130,17 @@ export default class ItemGenerator {
 
 	_addBonusStats(item) {
 		const coeff = item.itemLevel * RarityStatCoeff[item.rarity];
-		const bonusCount = Utils.random(0, RarityMaxBonus[item.rarity]);
+		const bonusLimit = RarityBonus[item.rarity];
+
+		let min = bonusLimit.min;
+		let max = bonusLimit.max;
+
+		if (item.slot === "ring") {
+			min++;
+			max++;
+		}
+
+		const bonusCount = Utils.random(min, max);
 
 		let bonus = Object.keys(item.bonus);
 		Utils.shuffle(bonus);

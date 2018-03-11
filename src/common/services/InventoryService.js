@@ -26,16 +26,16 @@ class InventoryService {
 	constructor() {
 		this.buildMatrix();
 
-		const itemLevel = 58;
+		const itemLevel = 1;
 
-		this.gear.mainHand = this.itemGenerator.generate(itemLevel, "mainHand", ItemRarity.Common);
-		this.gear.offHand = this.itemGenerator.generate(itemLevel, "offHand", ItemRarity.Common);
-		this.gear.head = this.itemGenerator.generate(itemLevel, "head", ItemRarity.Common);
-		this.gear.chest = this.itemGenerator.generate(itemLevel, "chest", ItemRarity.Common);
-		this.gear.legs = this.itemGenerator.generate(itemLevel, "legs", ItemRarity.Common);
-		this.gear.feet = this.itemGenerator.generate(itemLevel, "feet", ItemRarity.Common);
-		this.gear.hands = this.itemGenerator.generate(itemLevel, "hands", ItemRarity.Common);
-		this.gear.ring = this.itemGenerator.generate(itemLevel, "ring", ItemRarity.Common);
+		this.gear.mainHand = this.itemGenerator.generate(itemLevel, "mainHand", ItemRarity.Common, false);
+		this.gear.offHand = this.itemGenerator.generate(itemLevel, "offHand", ItemRarity.Common, false);
+		this.gear.head = this.itemGenerator.generate(itemLevel, "head", ItemRarity.Common, false);
+		this.gear.chest = this.itemGenerator.generate(itemLevel, "chest", ItemRarity.Common, false);
+		this.gear.legs = this.itemGenerator.generate(itemLevel, "legs", ItemRarity.Common, false);
+		this.gear.feet = this.itemGenerator.generate(itemLevel, "feet", ItemRarity.Common, false);
+		this.gear.hands = this.itemGenerator.generate(itemLevel, "hands", ItemRarity.Common, false);
+		this.gear.ring = this.itemGenerator.generate(itemLevel, "ring", ItemRarity.Common, false);
 
 		characterService.updateStats(this.gear);
 	}
