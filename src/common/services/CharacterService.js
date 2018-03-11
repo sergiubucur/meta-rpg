@@ -2,6 +2,8 @@ import EventDispatcher from "simple-event-dispatcher";
 
 import XpToNextLevel, { TotalXpToLevel, MaxXp } from "./XpToNextLevel";
 
+const MaxGold = 99999;
+
 class CharacterService {
 	events = new EventDispatcher();
 
@@ -13,6 +15,9 @@ class CharacterService {
 
 	modifyGold(amount) {
 		this.gold += amount;
+		if (this.gold > MaxGold) {
+			this.gold = MaxGold;
+		}
 
 		this.events.dispatch("update");
 	}
@@ -24,14 +29,12 @@ class CharacterService {
 			this.xp = MaxXp;
 		}
 
-		let levelUp = false;
 		const level = this._calculateLevel();
 		if (this.level < level) {
 			this.level = level;
-			levelUp = true;
 		}
 
-		this.events.dispatch("update", levelUp);
+		this.events.dispatch("update");
 	}
 
 	getXpToNextLevel() {

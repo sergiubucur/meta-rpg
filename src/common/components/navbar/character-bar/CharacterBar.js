@@ -3,11 +3,24 @@ import React, { Component } from "react";
 import "./CharacterBar.less";
 import characterService from "common/services/CharacterService";
 
+const AnimationDuration = 2000;
+
 export default class CharacterBar extends Component {
+	state = {
+		flash: false
+	}
+
 	componentDidMount() {
-		this.updateListener = characterService.events.addListener("update", (levelUp) => {
-			console.log("levelUp", levelUp);
-			this.forceUpdate();
+		this.updateListener = characterService.events.addListener("update", () => {
+			this.setState({
+				flash: true
+			}, () => {
+				setTimeout(() => {
+					this.setState({
+						flash: false
+					});
+				}, AnimationDuration);
+			});
 		});
 	}
 
@@ -17,15 +30,20 @@ export default class CharacterBar extends Component {
 
 	render() {
 		const { level, xp, gold } = characterService;
+		const { flash } = this.state;
 
 		const currentXp = xp - characterService.getTotalXpToLevel();
 		const xpToNextLevel = characterService.getXpToNextLevel();
 
 		return (
 			<div className="character-bar">
-				<span>Level {level}</span>
-				{level < 60 && <span>{currentXp} / {xpToNextLevel} XP</span>}
-				<span>{gold} gold</span>
+				{ flash && <div className="flash" /> }
+
+				<div className="values">
+					<span>Level {level}</span>
+					{level < 60 && <span>{currentXp} / {xpToNextLevel} XP</span>}
+					<span>{gold} gold</span>
+				</div>
 			</div>
 		);
 	}
