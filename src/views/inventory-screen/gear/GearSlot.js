@@ -4,6 +4,7 @@ import classNames from "classnames";
 
 import Item from "common/components/item/Item";
 import { RarityClass } from "common/components/item/ItemRarity";
+import inventoryService from "common/services/InventoryService";
 
 export default class GearSlot extends Component {
 	static defaultProps = {
@@ -25,6 +26,15 @@ export default class GearSlot extends Component {
 		e.dataTransfer.setData("text", JSON.stringify(data));
 	}
 
+	handleItemRightClick = (e) => {
+		if (e.ctrlKey) {
+			inventoryService.sellItem({
+				type: "gear",
+				slot: this.props.slot
+			});
+		}
+	}
+
 	render() {
 		const { item } = this.props;
 		const rarityClass = item ? RarityClass[item.rarity] : undefined;
@@ -32,7 +42,11 @@ export default class GearSlot extends Component {
 
 		return (
 			<div className={className}>
-				{item && <Item item={item} onItemDragStart={this.handleItemDragStart} />}
+				{item &&
+					<Item
+						item={item}
+						onItemDragStart={this.handleItemDragStart}
+						onRightClick={this.handleItemRightClick} />}
 			</div>
 		);
 	}

@@ -57,6 +57,14 @@ class InventoryService {
 		this.inventory = matrix;
 	}
 
+	itemDragStart() {
+		this.events.dispatch("itemDrag", "start");
+	}
+
+	itemDragEnd() {
+		this.events.dispatch("itemDrag", "end");
+	}
+
 	moveItem(src, dest) {
 		if (src.type === "inventory" && dest.type === "inventory") {
 			let aux = this.inventory[src.y][src.x];
@@ -88,6 +96,23 @@ class InventoryService {
 				this.events.dispatch("update");
 			}
 		}
+
+		this.itemDragEnd();
+	}
+
+	sellItem(src) {
+		if (src.type === "inventory") {
+			this.inventory[src.y][src.x] = null;
+		}
+
+		if (src.type === "gear") {
+			this.gear[src.slot] = null;
+		}
+
+		characterService.modifyGold(Utils.random(1, 100));
+
+		this.events.dispatch("update");
+		this.itemDragEnd();
 	}
 }
 

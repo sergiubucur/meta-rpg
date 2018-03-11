@@ -4,6 +4,7 @@ import classNames from "classnames";
 
 import Item from "common/components/item/Item";
 import { RarityClass } from "common/components/item/ItemRarity";
+import inventoryService from "common/services/InventoryService";
 
 export default class InventorySlot extends Component {
 	static defaultProps = {
@@ -51,6 +52,16 @@ export default class InventorySlot extends Component {
 	}
 
 	handleItemRightClick = (e) => {
+		if (e.ctrlKey) {
+			inventoryService.sellItem({
+				type: "inventory",
+				x: this.props.x,
+				y: this.props.y
+			});
+
+			return;
+		}
+
 		this.props.onItemDrop({
 			type: "inventory",
 			x: this.props.x,

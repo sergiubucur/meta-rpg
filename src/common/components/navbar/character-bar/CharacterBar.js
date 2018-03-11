@@ -12,15 +12,19 @@ export default class CharacterBar extends Component {
 
 	componentDidMount() {
 		this.updateListener = characterService.events.addListener("update", () => {
-			this.setState({
-				flash: true
-			}, () => {
-				setTimeout(() => {
-					this.setState({
-						flash: false
-					});
-				}, AnimationDuration);
-			});
+			if (!this.state.flash) {
+				this.setState({
+					flash: true
+				}, () => {
+					setTimeout(() => {
+						this.setState({
+							flash: false
+						});
+					}, AnimationDuration);
+				});
+			} else {
+				this.forceUpdate();
+			}
 		});
 	}
 

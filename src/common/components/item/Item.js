@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 
 import "./Item.less";
+import inventoryService from "common/services/InventoryService";
 import tooltipService from "common/services/ItemTooltipService";
 
 export default class Item extends Component {
@@ -20,7 +21,9 @@ export default class Item extends Component {
 	}
 
 	handleDragStart = (e) => {
+		inventoryService.itemDragStart();
 		tooltipService.hide();
+
 		this.props.onItemDragStart(e);
 	}
 

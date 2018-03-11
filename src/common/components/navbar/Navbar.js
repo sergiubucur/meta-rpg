@@ -4,6 +4,7 @@ import { withRouter } from "react-router-3";
 import "./Navbar.less";
 import CharacterBar from "./character-bar/CharacterBar";
 import NavbarItem from "./NavbarItem";
+import VendorNavbarItem from "./VendorNavbarItem";
 
 class Navbar extends Component {
 	render() {
@@ -18,9 +19,7 @@ class Navbar extends Component {
 					<NavbarItem route="/quest-log">
 						<i className="ra ra-trophy" />
 					</NavbarItem>
-					<NavbarItem route="/vendor">
-						<i className="fa fa-balance-scale" />
-					</NavbarItem>
+					<VendorNavbarItem />
 					<NavbarItem route="/settings">
 						<i className="fa fa-cogs" />
 					</NavbarItem>
