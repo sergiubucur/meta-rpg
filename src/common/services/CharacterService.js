@@ -95,9 +95,14 @@ class CharacterService {
 
 		return level;
 	}
+
+	cheatLevelUp() {
+		this.gainXp(this.getXpToNextLevel());
+	}
+
+	cheatGiveGold() {
+		this.modifyGold(10000);
+	}
 }
 
-const char = new CharacterService();
-window.char = char;
-
-export default char;
+export default new CharacterService();

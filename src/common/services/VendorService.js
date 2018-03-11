@@ -4,9 +4,9 @@ import ItemGenerator from "common/components/item/ItemGenerator";
 import ItemRarity from "common/components/item/ItemRarity";
 import Utils from "common/Utils";
 import characterService from "./CharacterService";
+import Slots from "common/components/item/Slots";
 
 const ItemCount = 100;
-const Slots = ["mainHand", "offHand", "head", "chest", "legs", "feet", "hands", "ring"];
 
 class VendorService {
 	events = new EventDispatcher();

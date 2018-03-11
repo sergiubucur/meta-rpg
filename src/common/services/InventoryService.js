@@ -3,6 +3,7 @@ import EventDispatcher from "simple-event-dispatcher";
 import ItemGenerator from "common/components/item/ItemGenerator";
 import ItemRarity from "common/components/item/ItemRarity";
 import characterService from "./CharacterService";
+import Slots from "common/components/item/Slots";
 
 export const InventoryWidth = 10;
 export const InventoryHeight = 8;
@@ -113,6 +114,17 @@ class InventoryService {
 
 		this.events.dispatch("update");
 		this.itemDragEnd();
+	}
+
+	cheatGiveItems() {
+		const itemLevel = characterService.level;
+
+		Slots.forEach((x, i) => {
+			this.inventory[0][i] = this.itemGenerator.generate(itemLevel, x);
+		});
+
+		this.events.dispatch("update");
+		characterService.events.dispatch("update");
 	}
 }
 
