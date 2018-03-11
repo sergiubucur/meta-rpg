@@ -1,6 +1,6 @@
 const ItemSlotInfo = {
 	head: {
-		names: ["Crown"],
+		names: ["Helm"],
 		image: {
 			min: 1,
 			max: 4

@@ -1,7 +1,7 @@
 import EventDispatcher from "simple-event-dispatcher";
-import Utils from "common/Utils";
 
 import ItemGenerator from "common/components/item/ItemGenerator";
+import ItemRarity from "common/components/item/ItemRarity";
 import characterService from "./CharacterService";
 
 export const InventoryWidth = 10;
@@ -26,18 +26,16 @@ class InventoryService {
 	constructor() {
 		this.buildMatrix();
 
-		this.gear.head = this.itemGenerator.generate(1, "head");
-		this.gear.chest = this.itemGenerator.generate(1, "chest");
+		const itemLevel = 58;
 
-		const slots = Object.keys(this.gear);
-
-		for (let i = 0; i < InventoryHeight; i++) {
-			for (let j = 0; j < InventoryWidth; j++) {
-				if (Math.random() < 0.33) {
-					this.inventory[i][j] = this.itemGenerator.generate(1, slots[Utils.random(0, 7)]);
-				}
-			}
-		}
+		this.gear.mainHand = this.itemGenerator.generate(itemLevel, "mainHand", ItemRarity.Common);
+		this.gear.offHand = this.itemGenerator.generate(itemLevel, "offHand", ItemRarity.Common);
+		this.gear.head = this.itemGenerator.generate(itemLevel, "head", ItemRarity.Common);
+		this.gear.chest = this.itemGenerator.generate(itemLevel, "chest", ItemRarity.Common);
+		this.gear.legs = this.itemGenerator.generate(itemLevel, "legs", ItemRarity.Common);
+		this.gear.feet = this.itemGenerator.generate(itemLevel, "feet", ItemRarity.Common);
+		this.gear.hands = this.itemGenerator.generate(itemLevel, "hands", ItemRarity.Common);
+		this.gear.ring = this.itemGenerator.generate(itemLevel, "ring", ItemRarity.Common);
 
 		characterService.updateStats(this.gear);
 	}
@@ -105,16 +103,21 @@ class InventoryService {
 	}
 
 	sellItem(src) {
+		let value = 0;
+
 		if (src.type === "inventory") {
+			value = this.inventory[src.y][src.x].value;
 			this.inventory[src.y][src.x] = null;
 		}
 
 		if (src.type === "gear") {
+			value = this.gear[src.slot].value;
 			this.gear[src.slot] = null;
+
 			characterService.updateStats(this.gear);
 		}
 
-		characterService.modifyGold(Utils.random(1, 100));
+		characterService.modifyGold(value);
 
 		this.events.dispatch("update");
 		this.itemDragEnd();

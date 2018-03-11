@@ -65,20 +65,16 @@ export default class ItemTooltip extends Component {
 		);
 	}
 
-	renderRequirements() {
+	renderRequirementsAndValue() {
 		const { item } = tooltipService;
-
-		if (item.requiredLevel === 0) {
-			return null;
-		}
-
 		const className = classNames({ error: characterService.level < item.requiredLevel });
 
 		return (
-			<div className={className}>
+			<div>
 				<br />
 
-				{`Requires Level ${item.requiredLevel}`}
+				<div className={className}>{item.requiredLevel > 1 && `Requires Level ${item.requiredLevel}`}</div>
+				<div className="value">Value:&nbsp;&nbsp;{item.value} gold</div>
 			</div>
 		);
 	}
@@ -96,6 +92,7 @@ export default class ItemTooltip extends Component {
 		return (
 			<div className={className} style={{ left: x, top: y }}>
 				<div className="name">{item.name}</div>
+				{item.itemLevel > 60 && <div>Item Level {item.itemLevel}</div>}
 				<div>{SlotName[item.slot]}</div>
 
 				<br />
@@ -104,7 +101,7 @@ export default class ItemTooltip extends Component {
 				{item.slot !== "mainHand" && item.slot !== "ring" && this.renderArmorAttributes(item)}
 
 				{this.renderBonusAttributes(item)}
-				{this.renderRequirements(item)}
+				{this.renderRequirementsAndValue(item)}
 			</div>
 		);
 	}

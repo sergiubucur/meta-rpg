@@ -6,4 +6,15 @@ export default class Utils {
 	static random(min, max) {
 		return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
+
+	// https://stackoverflow.com/a/6274381
+	static shuffle(a) {
+		var j, x, i;
+		for (i = a.length - 1; i > 0; i--) {
+			j = Math.floor(Math.random() * (i + 1));
+			x = a[i];
+			a[i] = a[j];
+			a[j] = x;
+		}
+	}
 }
