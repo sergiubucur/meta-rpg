@@ -12,10 +12,18 @@ class Navbar extends Component {
 					Level 1
 				</div>
 				<div className="menu">
-					<NavbarItem item={{ name: "Inventory", route: "" }} />
-					<NavbarItem item={{ name: "Quest Log", route: "/quest-log" }} />
-					<NavbarItem item={{ name: "Vendor", route: "/vendor" }} />
-					<NavbarItem item={{ name: "Settings", route: "/settings" }} />
+					<NavbarItem route="">
+						<i className="ra ra-sword" />
+					</NavbarItem>
+					<NavbarItem route="/quest-log">
+						<i className="ra ra-trophy" />
+					</NavbarItem>
+					<NavbarItem route="/vendor">
+						<i className="fa fa-balance-scale" />
+					</NavbarItem>
+					<NavbarItem route="/settings">
+						<i className="fa fa-cogs" />
+					</NavbarItem>
 				</div>
 			</div>
 		);
