@@ -2,15 +2,15 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-3";
 
 import "./Navbar.less";
+import CharacterBar from "./character-bar/CharacterBar";
 import NavbarItem from "./NavbarItem";
 
 class Navbar extends Component {
 	render() {
 		return (
 			<div className="navbar">
-				<div className="status-bar">
-					Level 1
-				</div>
+				<CharacterBar />
+
 				<div className="menu">
 					<NavbarItem route="">
 						<i className="ra ra-sword" />

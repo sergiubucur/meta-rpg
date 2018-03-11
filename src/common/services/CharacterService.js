@@ -11,6 +11,12 @@ class CharacterService {
 
 	gold = 0;
 
+	modifyGold(amount) {
+		this.gold += amount;
+
+		this.events.dispatch("update");
+	}
+
 	gainXp(xp) {
 		this.xp += xp;
 
@@ -18,18 +24,25 @@ class CharacterService {
 			this.xp = MaxXp;
 		}
 
-		const level = this.calculateLevel();
+		let levelUp = false;
+		const level = this._calculateLevel();
 		if (this.level < level) {
 			this.level = level;
-			this.events.dispatch("levelUp");
+			levelUp = true;
 		}
+
+		this.events.dispatch("update", levelUp);
+	}
+
+	getXpToNextLevel() {
+		return this.level === 60 ? 0 : XpToNextLevel[this.level - 1];
 	}
 
 	getTotalXpToLevel() {
 		return TotalXpToLevel[this.level - 1];
 	}
 
-	calculateLevel() {
+	_calculateLevel() {
 		if (this.xp === MaxXp) {
 			return 60;
 		}
@@ -46,4 +59,7 @@ class CharacterService {
 	}
 }
 
-export default new CharacterService();
+const char = new CharacterService();
+window.char = char;
+
+export default char;
