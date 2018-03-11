@@ -19,7 +19,7 @@ class Stats extends Component {
 	}
 
 	componentWillUnmount() {
-		characterService.events.removeListener("update", this.updateListener);
+		characterService.events.removeListener("statsUpdate", this.updateListener);
 	}
 
 	render() {
