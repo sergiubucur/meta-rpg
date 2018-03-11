@@ -10,8 +10,8 @@ class CharacterService {
 	level = 1;
 	xp = 0;
 	xpToNextLevel = XpToNextLevel[0];
-
 	gold = 0;
+	stats = {};
 
 	modifyGold(amount) {
 		this.gold += amount;
@@ -35,6 +35,42 @@ class CharacterService {
 		}
 
 		this.events.dispatch("update");
+	}
+
+	updateStats(gear) {
+		this.stats.minDamage = 1;
+		this.stats.maxDamage = 2;
+		this.stats.fireResist = 0;
+		this.stats.frostResist = 0;
+		this.stats.lightningResist = 0;
+		this.stats.armor = 0;
+		this.stats.fireDamage = 0;
+		this.stats.frostDamage = 0;
+		this.stats.lightningDamage = 0;
+
+		Object.keys(gear).forEach(key => {
+			const item = gear[key];
+
+			if (!item) {
+				return;
+			}
+
+			if (item.slot === "mainHand") {
+				this.stats.minDamage += item.minDamage;
+				this.stats.maxDamage += item.maxDamage;
+			} else {
+				if (item.slot !== "ring") {
+					this.stats.armor += item.armor;
+				}
+			}
+
+			Object.keys(item.bonus).forEach(bonusKey => {
+				this.stats[bonusKey] += item.bonus[bonusKey];
+			});
+		});
+
+		console.log(this.stats);
+		this.events.dispatch("statsUpdate");
 	}
 
 	getXpToNextLevel() {

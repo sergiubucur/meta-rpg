@@ -2,4 +2,22 @@
 
 .stats {
 	flex: 0 1 193px;
+	overflow: hidden;
+	padding-left: 36px;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+
+	.category {
+		& > div {
+			display: flex;
+			align-items: center;
+		}
+
+		i {
+			text-align: right;
+			padding-right: 10px;
+		}
+	}
 }

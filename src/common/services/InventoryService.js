@@ -38,6 +38,8 @@ class InventoryService {
 				}
 			}
 		}
+
+		characterService.updateStats(this.gear);
 	}
 
 	buildMatrix() {
@@ -82,6 +84,7 @@ class InventoryService {
 				this.gear[src.slot] = destItem;
 				this.inventory[dest.y][dest.x] = srcItem;
 
+				characterService.updateStats(this.gear);
 				this.events.dispatch("update");
 			}
 		}
@@ -93,6 +96,7 @@ class InventoryService {
 				this.inventory[src.y][src.x] = this.gear[aux.slot];
 				this.gear[aux.slot] = aux;
 
+				characterService.updateStats(this.gear);
 				this.events.dispatch("update");
 			}
 		}
@@ -107,6 +111,7 @@ class InventoryService {
 
 		if (src.type === "gear") {
 			this.gear[src.slot] = null;
+			characterService.updateStats(this.gear);
 		}
 
 		characterService.modifyGold(Utils.random(1, 100));

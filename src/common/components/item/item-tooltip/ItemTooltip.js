@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import classNames from "classnames";
 
 import "./ItemTooltip.less";
-import BonusAttributeName from "./BonusAttributeName";
+import StatName from "../StatName";
 import SlotName from "./SlotName";
 import tooltipService from "common/services/ItemTooltipService";
 import characterService from "common/services/CharacterService";
@@ -29,7 +29,7 @@ export default class ItemTooltip extends Component {
 
 		return (
 			<div>
-				<div>{item.minDamage} - {item.maxDamage} Damage</div>
+				<div>{item.minDamage} - {item.maxDamage}&nbsp;&nbsp;Damage</div>
 			</div>
 		);
 	}
@@ -39,7 +39,7 @@ export default class ItemTooltip extends Component {
 
 		return (
 			<div>
-				<div>{item.armor} Armor</div>
+				<div>{item.armor}&nbsp;&nbsp;Armor</div>
 			</div>
 		);
 	}
@@ -49,7 +49,7 @@ export default class ItemTooltip extends Component {
 
 		const attributes = Object.keys(item.bonus).filter(key => item.bonus[key] !== 0).map(key => {
 			return {
-				name: BonusAttributeName[key],
+				name: StatName[key],
 				value: item.bonus[key]
 			};
 		});
@@ -58,7 +58,7 @@ export default class ItemTooltip extends Component {
 			<div>
 				{attributes.map((attr, i) => (
 					<div key={i}>
-						{attr.value > 0 ? "+" : "-"} {attr.value} {attr.name}
+						{attr.value > 0 ? "+" : "-"} {attr.value}&nbsp;&nbsp;{attr.name}
 					</div>
 				))}
 			</div>
@@ -96,7 +96,6 @@ export default class ItemTooltip extends Component {
 		return (
 			<div className={className} style={{ left: x, top: y }}>
 				<div className="name">{item.name}</div>
-				<div>Item Level {item.itemLevel}</div>
 				<div>{SlotName[item.slot]}</div>
 
 				<br />

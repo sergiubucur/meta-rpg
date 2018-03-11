@@ -1,4 +1,4 @@
-const BonusAttributeName = {
+const StatName = {
 	minDamage: "Min Damage",
 	maxDamage: "Max Damage",
 	fireResist: "Fire Resistance",
@@ -10,4 +10,4 @@ const BonusAttributeName = {
 	lightningDamage: "Lightning Damage"
 };
 
-export default BonusAttributeName;
+export default StatName;

@@ -67,7 +67,6 @@ export default class ItemGenerator {
 	_generateWeapon(item) {
 		item.minDamage = Utils.random(1, 5);
 		item.maxDamage = Utils.random(6, 10);
-		item.requiredLevel = 2;
 	}
 
 	_generateRing(item) {
@@ -80,8 +79,6 @@ export default class ItemGenerator {
 		item.bonus.fireDamage = Utils.random(0, 5);
 		item.bonus.frostDamage = Utils.random(0, 5);
 		item.bonus.lightningDamage = Utils.random(0, 5);
-
-		item.requiredLevel = 3;
 	}
 
 	_generateArmor(item) {
