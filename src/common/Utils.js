@@ -16,5 +16,7 @@ export default class Utils {
 			a[i] = a[j];
 			a[j] = x;
 		}
+
+		return a;
 	}
 }

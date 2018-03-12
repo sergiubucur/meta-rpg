@@ -116,7 +116,7 @@ class InventoryService {
 		this.itemDragEnd();
 	}
 
-	buyItem(item) {
+	addItem(item) {
 		const location = this.hasRoom();
 
 		if (!location) {

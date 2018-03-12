@@ -66,10 +66,16 @@ function applyLowItemLevelFix(stats, itemLevel) {
 		return;
 	}
 
-	const coeff = 0.5 + itemLevel * 0.05;
-
 	Object.keys(stats).forEach(key => {
-		stats[key] *= coeff;
+		if (key === "minDamage" || key === "maxDamage") {
+			stats[key] *= 0.3 + 0.07 * itemLevel;
+			return;
+		}
+
+		if (key === "armor") {
+			stats[key] *= itemLevel * itemLevel * 0.01;
+			return;
+		}
 	});
 }
 
@@ -106,6 +112,6 @@ const common = generateSnapshot(ItemRarity.Common);
 const rare = generateSnapshot(ItemRarity.Rare);
 const epic = generateSnapshot(ItemRarity.Epic);
 
-console.log("common:", JSON.stringify(common));
-console.log("rare:", JSON.stringify(rare));
-console.log("epic:", JSON.stringify(epic));
+console.log(`"1": `, JSON.stringify(common));
+console.log(`"2": `, JSON.stringify(rare));
+console.log(`"3": `, JSON.stringify(epic));

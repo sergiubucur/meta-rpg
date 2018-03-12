@@ -95,7 +95,7 @@ export default class VendorScreen extends Component {
 			return;
 		}
 
-		if (!inventoryService.buyItem(item)) {
+		if (!inventoryService.addItem(item)) {
 			this.setState({
 				errorMessage: "Inventory is full."
 			});
