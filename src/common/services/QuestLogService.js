@@ -24,8 +24,7 @@ class QuestLogService {
 			gold,
 
 			requirements: {
-				minDamage: 0,
-				maxDamage: 0,
+				damage: 0,
 				fireDamage: 0,
 				frostDamage: 0,
 				lightningDamage: 0,
@@ -38,8 +37,7 @@ class QuestLogService {
 
 		const snapshot = GearSnapshot[rarity];
 
-		quest.requirements.minDamage = snapshot.minDamage[level - 1];
-		quest.requirements.maxDamage = snapshot.maxDamage[level - 1];
+		quest.requirements.damage = snapshot.damage[level - 1];
 		quest.requirements.armor = snapshot.armor[level - 1];
 
 		this._addExtraRequirements(quest);
