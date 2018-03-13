@@ -213,7 +213,7 @@ export default class VendorScreen extends Component {
 							{items.map((item, i) => (
 								<tr key={i}>
 									<td>
-										<Item item={item} draggable={false} vendor />
+										<Item item={item} draggable={false} source="vendor" />
 									</td>
 									<td>{SlotName[item.slot]}</td>
 									<td className="gold-cell">{item.vendorValue}</td>

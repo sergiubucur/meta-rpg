@@ -10,8 +10,7 @@ export default class Item extends Component {
 	static defaultProps = {
 		onRightClick: () => {},
 		onItemDragStart: () => {},
-		draggable: true,
-		vendor: false
+		draggable: true
 	}
 
 	static propTypes = {
@@ -19,7 +18,7 @@ export default class Item extends Component {
 		onRightClick: PropTypes.func,
 		onItemDragStart: PropTypes.func,
 		draggable: PropTypes.bool,
-		vendor: PropTypes.bool
+		source: PropTypes.string.isRequired
 	}
 
 	handleDragStart = (e) => {
@@ -35,7 +34,7 @@ export default class Item extends Component {
 	}
 
 	handleMouseEnter = (e) => {
-		tooltipService.show(this.props.item, this.props.vendor);
+		tooltipService.show(this.props.item, this.props.source);
 	}
 
 	handleMouseLeave = (e) => {

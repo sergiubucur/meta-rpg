@@ -66,17 +66,20 @@ export default class ItemTooltip extends Component {
 	}
 
 	renderRequirementsAndValue() {
-		const { item, vendor } = tooltipService;
+		const { item, source } = tooltipService;
 		const className = classNames({ error: characterService.level < item.requiredLevel });
 
 		return (
 			<div>
-				{(item.requiredLevel > 1 || !vendor) && <br />}
+				{(item.requiredLevel > 1 || source !== "vendor") && <br />}
 
 				<div className={className}>{item.requiredLevel > 1 && `Requires Level ${item.requiredLevel}`}</div>
-				{!vendor && <div className="value">Value:&nbsp;&nbsp;{item.value} gold</div>}
+				{source !== "vendor" && <div className="value">Value:&nbsp;&nbsp;{item.value} gold</div>}
 			</div>
 		);
+	}
+
+	renderComparison() {
 	}
 
 	render() {

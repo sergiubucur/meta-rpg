@@ -82,7 +82,8 @@ export default class InventorySlot extends Component {
 					<Item
 						item={item}
 						onItemDragStart={this.handleItemDragStart}
-						onRightClick={this.handleItemRightClick} />}
+						onRightClick={this.handleItemRightClick}
+						source="inventory" />}
 			</div>
 		);
 	}

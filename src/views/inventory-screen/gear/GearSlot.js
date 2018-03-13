@@ -46,7 +46,8 @@ export default class GearSlot extends Component {
 					<Item
 						item={item}
 						onItemDragStart={this.handleItemDragStart}
-						onRightClick={this.handleItemRightClick} />}
+						onRightClick={this.handleItemRightClick}
+						source="gear" />}
 			</div>
 		);
 	}

@@ -4,7 +4,7 @@ class ItemTooltipService {
 	events = new EventDispatcher();
 
 	item = null;
-	vendor = false;
+	source = null;
 	x = 0;
 	y = 0;
 
@@ -22,16 +22,16 @@ class ItemTooltipService {
 		});
 	}
 
-	show(item, vendor) {
+	show(item, source) {
 		this.item = item;
-		this.vendor = vendor;
+		this.source = source;
 
 		this.events.dispatch("update");
 	}
 
 	hide() {
 		this.item = null;
-		this.vendor = false;
+		this.source = null;
 
 		this.events.dispatch("update");
 	}
