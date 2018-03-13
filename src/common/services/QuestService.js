@@ -8,7 +8,7 @@ import Slots from "common/components/item/Slots";
 import Utils from "common/Utils";
 import QuestProgression from "./QuestProgression";
 
-class QuestLogService {
+class QuestService {
 	events = new EventDispatcher();
 	itemGenerator = new ItemGenerator();
 
@@ -97,14 +97,14 @@ class QuestLogService {
 	}
 }
 
-const questLog = new QuestLogService();
+const questService = new QuestService();
 window.quest = () => {
-	const quest = questLog.generateQuest(1);
+	const quest = questService.generateQuest(1);
 	console.log("success rate", quest.successRate.toFixed(2));
 	console.log("requirements", Object.keys(quest.requirements).filter(x => quest.requirements[x] > 0).map(x => x + " " + quest.requirements[x]));
 
-	if (questLog.isQuestSuccessful(quest)) {
-		const item = questLog.generateQuestReward(quest);
+	if (questService.isQuestSuccessful(quest)) {
+		const item = questService.generateQuestReward(quest);
 
 		if (inventoryService.addItem(item)) {
 			characterService.gainXp(quest.xp);
@@ -119,4 +119,4 @@ window.quest = () => {
 	}
 };
 
-export default new QuestLogService();
+export default new QuestService();

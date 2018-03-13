@@ -16,7 +16,7 @@ class Navbar extends Component {
 					<NavbarItem route="">
 						<i className="ra ra-sword" />
 					</NavbarItem>
-					<NavbarItem route="/quest-log">
+					<NavbarItem route="/quest">
 						<i className="ra ra-trophy" />
 					</NavbarItem>
 					<VendorNavbarItem />
