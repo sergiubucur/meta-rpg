@@ -14,7 +14,11 @@ export default class ItemGenerator {
 			slot,
 			rarity,
 			requiredLevel: Math.min(60, itemLevel),
-			value: 1
+			value: 1,
+
+			minDamage: 0,
+			maxDamage: 0,
+			armor: 0
 		};
 
 		const baseBonus = {
@@ -29,15 +33,6 @@ export default class ItemGenerator {
 			lightningDamage: 0
 		};
 
-		const baseWeapon = {
-			minDamage: 0,
-			maxDamage: 0
-		};
-
-		const baseArmor = {
-			armor: 0
-		};
-
 		const item = {
 			...baseItem,
 			bonus: baseBonus
@@ -48,12 +43,17 @@ export default class ItemGenerator {
 		item.name = slotInfo.names[0];
 		item.image = `${item.slot}${Utils.random(slotInfo.image.min, slotInfo.image.max)}`;
 
-		if (item.slot === "mainHand") {
-			Object.assign(item, baseWeapon);
-			this._generateWeapon(item);
-		} else {
-			Object.assign(item, baseArmor);
-			this._generateArmor(item);
+		switch (item.slot) {
+			case "mainHand":
+				this._generateWeapon(item);
+				break;
+
+			case "ring":
+				break;
+
+			default:
+				this._generateArmor(item);
+				break;
 		}
 
 		this._addBonusStats(item);

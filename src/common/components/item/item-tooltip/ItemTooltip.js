@@ -6,6 +6,7 @@ import StatName from "../StatName";
 import SlotName from "./SlotName";
 import tooltipService from "common/services/ItemTooltipService";
 import characterService from "common/services/CharacterService";
+import inventoryService from "common/services/InventoryService";
 import { RarityClass } from "common/components/item/ItemRarity";
 
 export default class ItemTooltip extends Component {
@@ -28,9 +29,7 @@ export default class ItemTooltip extends Component {
 		const { item } = tooltipService;
 
 		return (
-			<div>
-				<div>{item.minDamage} - {item.maxDamage}&nbsp;&nbsp;Damage</div>
-			</div>
+			<div>{item.minDamage} - {item.maxDamage}&nbsp;&nbsp;Damage</div>
 		);
 	}
 
@@ -38,9 +37,7 @@ export default class ItemTooltip extends Component {
 		const { item } = tooltipService;
 
 		return (
-			<div>
-				<div>{item.armor}&nbsp;&nbsp;Armor</div>
-			</div>
+			<div>{item.armor}&nbsp;&nbsp;Armor</div>
 		);
 	}
 
@@ -71,8 +68,6 @@ export default class ItemTooltip extends Component {
 
 		return (
 			<div>
-				{(item.requiredLevel > 1 || source !== "vendor") && <br />}
-
 				<div className={className}>{item.requiredLevel > 1 && `Requires Level ${item.requiredLevel}`}</div>
 				{source !== "vendor" && <div className="value">Value:&nbsp;&nbsp;{item.value} gold</div>}
 			</div>
@@ -80,10 +75,30 @@ export default class ItemTooltip extends Component {
 	}
 
 	renderComparison() {
+		const { item } = tooltipService;
+		const stats = inventoryService.compareItem(item);
+
+		return (
+			<div>
+				{Object.keys(stats).map(key => {
+					const stat = stats[key];
+
+					if (stat === 0) {
+						return null;
+					}
+
+					return (
+						<div key={key} className={stat > 0 ? "positive" : "negative"}>
+							{stat > 0 && "+"}{stat < 0 && "-"}&nbsp;&nbsp;{Math.abs(stat)} {StatName[key]}
+						</div>
+					);
+				})}
+			</div>
+		);
 	}
 
 	render() {
-		const { item, x, y } = tooltipService;
+		const { item, source, x, y } = tooltipService;
 
 		if (!item) {
 			return null;
@@ -94,17 +109,21 @@ export default class ItemTooltip extends Component {
 
 		return (
 			<div className={className} style={{ left: x, top: y }}>
-				<div className="name">{item.name}</div>
-				{item.itemLevel > 60 && <div>Item Level {item.itemLevel}</div>}
-				<div>{SlotName[item.slot]}</div>
+				<div>
+					<div className="name">{item.name}</div>
+					{item.itemLevel > 60 && <div>Item Level {item.itemLevel}</div>}
+					<div>{SlotName[item.slot]}</div>
+				</div>
 
-				<br />
+				<div>
+					{item.slot === "mainHand" && this.renderWeaponAttributes()}
+					{item.slot !== "mainHand" && item.slot !== "ring" && this.renderArmorAttributes()}
 
-				{item.slot === "mainHand" && this.renderWeaponAttributes(item)}
-				{item.slot !== "mainHand" && item.slot !== "ring" && this.renderArmorAttributes(item)}
+					{this.renderBonusAttributes()}
+				</div>
 
-				{this.renderBonusAttributes(item)}
-				{this.renderRequirementsAndValue(item)}
+				{this.renderRequirementsAndValue()}
+				{source !== "gear" && this.renderComparison()}
 			</div>
 		);
 	}

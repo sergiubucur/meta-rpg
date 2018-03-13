@@ -141,6 +141,39 @@ class InventoryService {
 		return false;
 	}
 
+	compareItem(item) {
+		let gearItem = this.gear[item.slot];
+		const stats = {
+			minDamage: 0,
+			maxDamage: 0,
+			armor: 0
+		};
+
+		if (!gearItem) {
+			gearItem = {
+				minDamage: 0,
+				maxDamage: 0,
+				armor: 0,
+
+				bonus: {}
+			};
+
+			Object.keys(item.bonus).forEach(key => {
+				gearItem.bonus[key] = 0;
+			});
+		}
+
+		Object.keys(item.bonus).forEach(key => {
+			stats[key] = item.bonus[key] - gearItem.bonus[key];
+		});
+
+		stats.minDamage += item.minDamage - gearItem.minDamage;
+		stats.maxDamage += item.maxDamage - gearItem.maxDamage;
+		stats.armor += item.armor - gearItem.armor;
+
+		return stats;
+	}
+
 	cheatGiveItems() {
 		const itemLevel = characterService.level;
 
