@@ -69,6 +69,8 @@ class CharacterService {
 			});
 		});
 
+		this.stats.damage = Math.floor((this.stats.minDamage + this.stats.maxDamage) / 2);
+
 		this.events.dispatch("statsUpdate");
 	}
 

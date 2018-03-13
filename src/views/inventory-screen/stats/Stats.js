@@ -28,7 +28,7 @@ class Stats extends Component {
 		return (
 			<div className="stats">
 				<div className="category">
-					<StatRow name="Damage" value={`${stats.minDamage} - ${stats.maxDamage}`} icon="ra ra-sword" />
+					<StatRow name="Damage" value={stats.damage} icon="ra ra-sword" />
 					<StatRow name="Fire Damage" value={stats.fireDamage} icon="ra ra-flame-symbol" />
 					<StatRow name="Frost Damage" value={stats.frostDamage} icon="ra ra-kaleidoscope" />
 					<StatRow name="Lightning Damage" value={stats.lightningDamage} icon="ra ra-lightning-bolt" />
