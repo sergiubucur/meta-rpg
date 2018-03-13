@@ -66,6 +66,10 @@ export default class ItemTooltip extends Component {
 		const { item, source } = tooltipService;
 		const className = classNames({ error: characterService.level < item.requiredLevel });
 
+		if (item.requiredLevel === 1 && source === "vendor") {
+			return null;
+		}
+
 		return (
 			<div>
 				<div className={className}>{item.requiredLevel > 1 && `Requires Level ${item.requiredLevel}`}</div>
@@ -77,6 +81,10 @@ export default class ItemTooltip extends Component {
 	renderComparison() {
 		const { item } = tooltipService;
 		const stats = inventoryService.compareItem(item);
+
+		if (Object.keys(stats).filter(x => stats[x] !== 0).length === 0) {
+			return null;
+		}
 
 		return (
 			<div>
