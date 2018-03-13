@@ -86,14 +86,14 @@ function mergeDamage(stats) {
 	delete stats.maxDamage;
 }
 
-function generateSnapshot(rarity) {
+function generateSnapshot() {
 	const snapshot = {};
 
 	for (let itemLevel = 1; itemLevel <= 60; itemLevel++) {
 		const totalStats = getEmptyStats();
 
 		for (let i = 0; i < SimulationCount; i++) {
-			const gear = generateGear(itemLevel, rarity, true);
+			const gear = generateGear(itemLevel, ItemRarity.Common, true);
 			const stats = calculateStats(gear);
 			addStats(totalStats, stats);
 		}
@@ -114,12 +114,34 @@ function generateSnapshot(rarity) {
 	return snapshot;
 }
 
+function convertToCsv(snapshot) {
+	let csv = [];
+
+	// header
+	const header = [`"level"`];
+	for (let i = 1; i <= 60; i++) {
+		header.push(i);
+	}
+	csv.push(header);
+
+	// rows
+	Object.keys(snapshot).forEach(key => {
+		csv.push([`"${key}"`, ...snapshot[key]]);
+	});
+
+	// merge into one string
+	csv.forEach((x) => {
+		x = x.join(",");
+	});
+	csv = csv.join("\n");
+
+	return csv;
+}
+
 console.log("Computing...");
 
-const common = generateSnapshot(ItemRarity.Common);
-const rare = generateSnapshot(ItemRarity.Rare);
-const epic = generateSnapshot(ItemRarity.Epic);
+const snapshot = generateSnapshot();
+console.log(JSON.stringify(snapshot));
 
-console.log(`"1": `, JSON.stringify(common));
-console.log(`"2": `, JSON.stringify(rare));
-console.log(`"3": `, JSON.stringify(epic));
+console.log("CSV");
+console.log(convertToCsv(snapshot));
