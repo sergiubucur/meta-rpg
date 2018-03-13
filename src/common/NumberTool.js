@@ -79,6 +79,13 @@ function applyLowItemLevelFix(stats, itemLevel) {
 	});
 }
 
+function mergeDamage(stats) {
+	stats.damage = Math.floor((stats.minDamage + stats.maxDamage) / 2);
+
+	delete stats.minDamage;
+	delete stats.maxDamage;
+}
+
 function generateSnapshot(rarity) {
 	const snapshot = {};
 
@@ -93,6 +100,7 @@ function generateSnapshot(rarity) {
 
 		divideStats(totalStats, SimulationCount);
 		applyLowItemLevelFix(totalStats, itemLevel);
+		mergeDamage(totalStats);
 
 		Object.keys(totalStats).forEach(key => {
 			if (snapshot[key] === undefined) {
