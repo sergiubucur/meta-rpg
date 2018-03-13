@@ -4,15 +4,60 @@ import GearSnapshot from "./GearSnapshot";
 import characterService from "./CharacterService";
 import inventoryService from "./InventoryService";
 import ItemGenerator from "common/components/item/ItemGenerator";
+import ItemRarity from "common/components/item/ItemRarity";
 import Slots from "common/components/item/Slots";
 import Utils from "common/Utils";
 import QuestProgression from "./QuestProgression";
+import QuestState from "./QuestState";
 
 class QuestService {
 	events = new EventDispatcher();
 	itemGenerator = new ItemGenerator();
 
-	generateQuest(rarity) {
+	quests = [];
+	currentQuest = null;
+	questSuccess = false;
+	state = QuestState.PreSelection;
+
+	generateQuests() {
+		this.quests.length = 0;
+		this.currentQuest = null;
+
+		for (let i = 0; i < 3; i++) {
+			this.quests[i] = this._generateQuest(ItemRarity.Common);
+		}
+
+		this.state = QuestState.Selection;
+	}
+
+	attemptQuest(quest) {
+		this.currentQuest = quest;
+		this.state = QuestState.Attempt;
+	}
+
+	completeQuest() {
+		this.questSuccess = this.isQuestSuccessful(this.currentQuest);
+		this.state = QuestState.Completion;
+	}
+
+	acquireReward() {
+		if (inventoryService.hasRoom()) {
+			const item = this.generateQuestReward(this.currentQuest);
+
+			if (inventoryService.addItem(item)) {
+				characterService.gainXp(this.currentQuest.xp);
+				characterService.modifyGold(this.currentQuest.gold);
+
+				return true;
+			}
+
+			return false;
+		}
+
+		return false;
+	}
+
+	_generateQuest(rarity) {
 		const level = characterService.level;
 		const xp = Math.ceil(characterService.getXpToNextLevel() / 3);
 		const gold = 0;
@@ -103,20 +148,7 @@ window.quest = () => {
 	console.log("success rate", quest.successRate.toFixed(2));
 	console.log("requirements", Object.keys(quest.requirements).filter(x => quest.requirements[x] > 0).map(x => x + " " + quest.requirements[x]));
 
-	if (questService.isQuestSuccessful(quest)) {
-		const item = questService.generateQuestReward(quest);
 
-		if (inventoryService.addItem(item)) {
-			characterService.gainXp(quest.xp);
-			characterService.modifyGold(quest.gold);
-
-			console.log("quest completed successfully");
-		} else {
-			console.log("error: inventory is full");
-		}
-	} else {
-		console.log("quest failed");
-	}
 };
 
 export default new QuestService();
