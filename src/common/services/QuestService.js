@@ -1,14 +1,14 @@
 import EventDispatcher from "simple-event-dispatcher";
 
-import GearSnapshot from "./GearSnapshot";
+import GearSnapshot from "./data/GearSnapshot";
 import characterService from "./CharacterService";
 import inventoryService from "./InventoryService";
 import ItemGenerator from "common/components/item/ItemGenerator";
 import ItemRarity from "common/components/item/ItemRarity";
 import Slots from "common/components/item/Slots";
 import Utils from "common/Utils";
-import QuestProgression from "./QuestProgression";
-import QuestState from "./QuestState";
+import QuestProgression from "./data/QuestProgression";
+import QuestState from "./data/QuestState";
 
 class QuestService {
 	events = new EventDispatcher();
@@ -80,10 +80,8 @@ class QuestService {
 			}
 		};
 
-		const snapshot = GearSnapshot[rarity];
-
-		quest.requirements.damage = snapshot.damage[level - 1];
-		quest.requirements.armor = snapshot.armor[level - 1];
+		quest.requirements.damage = GearSnapshot.damage[level - 1];
+		quest.requirements.armor = GearSnapshot.armor[level - 1];
 
 		this._addExtraRequirements(quest);
 
@@ -127,8 +125,6 @@ class QuestService {
 	}
 
 	_addExtraRequirements(quest) {
-		const snapshot = GearSnapshot[quest.rarity];
-
 		const index = Math.ceil(quest.level / 10) - 1;
 		const requirements = QuestProgression[index];
 
@@ -136,19 +132,10 @@ class QuestService {
 			const stats = Utils.shuffle(req.stats.slice(0)).slice(0, req.count);
 
 			stats.forEach(stat => {
-				quest.requirements[stat] = snapshot[stat][quest.level - 1];
+				quest.requirements[stat] = GearSnapshot[stat][quest.level - 1];
 			});
 		});
 	}
 }
-
-const questService = new QuestService();
-window.quest = () => {
-	const quest = questService.generateQuest(1);
-	console.log("success rate", quest.successRate.toFixed(2));
-	console.log("requirements", Object.keys(quest.requirements).filter(x => quest.requirements[x] > 0).map(x => x + " " + quest.requirements[x]));
-
-
-};
 
 export default new QuestService();

@@ -1,6 +1,6 @@
 import EventDispatcher from "simple-event-dispatcher";
 
-import XpToNextLevel, { TotalXpToLevel, MaxXp } from "./XpToNextLevel";
+import XpToNextLevel, { TotalXpToLevel, MaxXp } from "./data/XpToNextLevel";
 
 const MaxGold = 99999;
 
