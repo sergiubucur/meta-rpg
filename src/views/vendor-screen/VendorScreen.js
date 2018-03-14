@@ -2,115 +2,24 @@ import React, { Component } from "react";
 
 import "./VendorScreen.less";
 import vendorService from "common/services/VendorService";
-import characterService from "common/services/CharacterService";
-import inventoryService from "common/services/InventoryService";
 import SlotName from "common/components/item/item-tooltip/SlotName";
 import Slots from "common/components/item/Slots";
 import Item from "common/components/item/Item";
-
-const ItemsPerPage = 7;
+import StatName from "common/components/item/StatName";
 
 export default class VendorScreen extends Component {
-	state = {
-		items: [],
-		totalCount: 0,
-		sortBy: "",
-		slot: "",
-		rarity: "",
-		minPrice: "",
-		maxPrice: "",
-		maxLevel: "",
-		errorMessage: ""
-	}
-
-	componentWillMount() {
-		this.setState(this.getItems());
-	}
-
-	getItems() {
-		let { items } = vendorService;
-		const { slot, sortBy } = this.state;
-		let { minPrice, maxPrice, rarity, maxLevel } = this.state;
-
-		items = items.slice(0);
-
-		if (slot) {
-			items = items.filter(x => x.slot === slot);
-		}
-
-		rarity = parseInt(rarity, 10);
-		if (rarity) {
-			items = items.filter(x => x.rarity === rarity);
-		}
-
-		minPrice = parseInt(minPrice, 10);
-		if (minPrice) {
-			items = items.filter(x => x.vendorValue >= minPrice);
-		}
-
-		maxPrice = parseInt(maxPrice, 10);
-		if (maxPrice) {
-			items = items.filter(x => x.vendorValue <= maxPrice);
-		}
-
-		maxLevel = parseInt(maxLevel, 10);
-		if (maxLevel) {
-			items = items.filter(x => x.requiredLevel <= maxLevel);
-		}
-
-		if (sortBy === "") {
-			items.sort((a, b) => {
-				return b.vendorValue - a.vendorValue;
-			});
-		} else {
-			items.sort((a, b) => {
-				return a.vendorValue - b.vendorValue;
-			});
-		}
-
-		const totalCount = items.length;
-		items = items.slice(0, ItemsPerPage);
-
-		return {
-			items,
-			totalCount,
-			errorMessage: ""
-		};
-	}
-
-	filterChange(name, value) {
-		this.setState({
-			[name]: value
-		}, () => {
-			this.setState(this.getItems());
+	componentDidMount() {
+		this.updateListener = vendorService.events.addListener("update", () => {
+			this.forceUpdate();
 		});
 	}
 
-	handleBuyClick = (item) => {
-		if (characterService.gold < item.vendorValue) {
-			this.setState({
-				errorMessage: "You do not have enough gold."
-			});
-
-			return;
-		}
-
-		if (!inventoryService.addItem(item)) {
-			this.setState({
-				errorMessage: "Inventory is full."
-			});
-
-			return;
-		}
-
-		vendorService.buyItem(item);
-		characterService.modifyGold(-item.vendorValue);
-
-		this.setState(this.getItems());
+	componentWillUnmount() {
+		vendorService.events.removeListener("update", this.updateListener);
 	}
 
 	render() {
-		const { items, totalCount, sortBy, slot, rarity, minPrice, maxPrice, maxLevel, errorMessage } = this.state;
+		const { items, totalCount, sortBy, slot, rarity, hasAttribute, maxPrice, maxLevel, errorMessage } = vendorService.screenData;
 
 		return (
 			<div className="vendor-screen">
@@ -128,7 +37,7 @@ export default class VendorScreen extends Component {
 							Sort by
 						</div>
 						<div className="value">
-							<select value={sortBy} onChange={(e) => this.filterChange("sortBy", e.target.value)}>
+							<select value={sortBy} onChange={(e) => vendorService.changeFilter("sortBy", e.target.value)}>
 								<option value="">Price descending</option>
 								<option value="1">Price ascending</option>
 							</select>
@@ -140,7 +49,7 @@ export default class VendorScreen extends Component {
 							Slot
 						</div>
 						<div className="value">
-							<select value={slot} onChange={(e) => this.filterChange("slot", e.target.value)}>
+							<select value={slot} onChange={(e) => vendorService.changeFilter("slot", e.target.value)}>
 								<option value="">All</option>
 								{Slots.map(x => (
 									<option key={x} value={x}>{SlotName[x]}</option>
@@ -154,7 +63,7 @@ export default class VendorScreen extends Component {
 							Rarity
 						</div>
 						<div className="value">
-							<select value={rarity} onChange={(e) => this.filterChange("rarity", e.target.value)}>
+							<select value={rarity} onChange={(e) => vendorService.changeFilter("rarity", e.target.value)}>
 								<option value="">All</option>
 								<option value="1">Common</option>
 								<option value="2">Rare</option>
@@ -165,10 +74,15 @@ export default class VendorScreen extends Component {
 
 					<div className="filter">
 						<div className="name">
-							Minimum price
+							Has attribute
 						</div>
 						<div className="value">
-							<input type="text" value={minPrice} onChange={(e) => this.filterChange("minPrice", e.target.value)} />
+							<select value={hasAttribute} onChange={(e) => vendorService.changeFilter("hasAttribute", e.target.value)}>
+								<option value="">Any</option>
+								{Object.keys(StatName).map(x => (
+									<option key={x} value={x}>{StatName[x]}</option>
+								))}
+							</select>
 						</div>
 					</div>
 
@@ -177,7 +91,7 @@ export default class VendorScreen extends Component {
 							Maximum price
 						</div>
 						<div className="value">
-							<input type="text" value={maxPrice} onChange={(e) => this.filterChange("maxPrice", e.target.value)} />
+							<input type="text" value={maxPrice} onChange={(e) => vendorService.changeFilter("maxPrice", e.target.value)} />
 						</div>
 					</div>
 
@@ -186,7 +100,7 @@ export default class VendorScreen extends Component {
 							Maximum level
 						</div>
 						<div className="value">
-							<input type="text" value={maxLevel} onChange={(e) => this.filterChange("maxLevel", e.target.value)} />
+							<input type="text" value={maxLevel} onChange={(e) => vendorService.changeFilter("maxLevel", e.target.value)} />
 						</div>
 					</div>
 
@@ -218,7 +132,7 @@ export default class VendorScreen extends Component {
 									<td>{SlotName[item.slot]}</td>
 									<td className="gold-cell">{item.vendorValue}</td>
 									<td>
-										<button type="button" onClick={() => this.handleBuyClick(item)}>Buy</button>
+										<button type="button" onClick={() => vendorService.buyItem(item)}>Buy</button>
 									</td>
 								</tr>
 							))}
