@@ -103,25 +103,25 @@ class QuestService {
 	calculateSuccessRate(quest) {
 		const { stats } = characterService;
 
-		let successRate = 0;
-		let count = 0;
+		const rate = {};
 
 		Object.keys(quest.requirements).forEach(key => {
 			const requirement = quest.requirements[key];
 			const stat = stats[key];
 
 			if (requirement > 0) {
-				let rate = 1;
+				rate[key] = 1;
 				if (stat / requirement < 0.9) {
-					rate = 0;
+					rate[key] = 0;
 				}
-
-				successRate += rate;
-				count++;
 			}
 		});
 
-		return successRate / count;
+		if (rate.damage === 0 || rate.armor === 0) {
+			return 0;
+		}
+
+		return Object.keys(rate).reduce((a, x) => a + rate[x], 0) / Object.keys(rate).length;
 	}
 
 	_addExtraRequirements(quest) {
@@ -132,7 +132,7 @@ class QuestService {
 			const stats = Utils.shuffle(req.stats.slice(0)).slice(0, req.count);
 
 			stats.forEach(stat => {
-				quest.requirements[stat] = GearSnapshot[stat][quest.level - 1];
+				quest.requirements[stat] = GearSnapshot[stat][quest.level - 1] * req.multiplier;
 			});
 		});
 	}
