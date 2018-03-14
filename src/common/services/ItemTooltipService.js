@@ -17,8 +17,8 @@ class ItemTooltipService {
 		document.addEventListener("mousemove", (e) => {
 			const elem = document.querySelector(".item-tooltip");
 
-			this.x = e.pageX + 24;
-			this.y = e.pageY + 16;
+			this.x = e.pageX + Offset.x;
+			this.y = e.pageY + Offset.y;
 
 			if (elem) {
 				const rect = elem.getBoundingClientRect();
