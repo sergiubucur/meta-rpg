@@ -1,5 +1,10 @@
 import EventDispatcher from "simple-event-dispatcher";
 
+const Offset = {
+	x: 24,
+	y: 16
+};
+
 class ItemTooltipService {
 	events = new EventDispatcher();
 
@@ -16,6 +21,16 @@ class ItemTooltipService {
 			this.y = e.pageY + 16;
 
 			if (elem) {
+				const rect = elem.getBoundingClientRect();
+
+				if (this.x + rect.width >= window.innerWidth) {
+					this.x -= Offset.x * 2 + rect.width;
+				}
+
+				if (this.y + rect.height >= window.innerHeight) {
+					this.y -= Offset.y * 2 + rect.height;
+				}
+
 				elem.style.left = `${this.x}px`;
 				elem.style.top = `${this.y}px`;
 			}
