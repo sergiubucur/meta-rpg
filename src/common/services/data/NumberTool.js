@@ -68,7 +68,7 @@ function applyLowItemLevelFix(stats, itemLevel) {
 
 	Object.keys(stats).forEach(key => {
 		if (key === "minDamage" || key === "maxDamage") {
-			stats[key] *= 0.3 + 0.07 * itemLevel;
+			stats[key] *= itemLevel * 0.1;
 			return;
 		}
 
@@ -80,7 +80,7 @@ function applyLowItemLevelFix(stats, itemLevel) {
 }
 
 function mergeDamage(stats) {
-	stats.damage = Math.floor((stats.minDamage + stats.maxDamage) / 2);
+	stats.damage = Math.ceil((stats.minDamage + stats.maxDamage) / 2);
 
 	delete stats.minDamage;
 	delete stats.maxDamage;
