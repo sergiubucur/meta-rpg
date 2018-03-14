@@ -111,8 +111,8 @@ class QuestService {
 			const stat = stats[key];
 
 			if (requirement > 0) {
-				let rate = Math.min(stat / requirement, 1);
-				if (rate < 0.9) {
+				let rate = 1;
+				if (stat / requirement < 0.9) {
 					rate = 0;
 				}
 
