@@ -9,6 +9,7 @@ import Slots from "common/components/item/Slots";
 import Utils from "common/Utils";
 import QuestProgression from "./data/QuestProgression";
 import QuestState from "./data/QuestState";
+import QuestIcons from "./data/QuestIcons";
 
 class QuestService {
 	events = new EventDispatcher();
@@ -23,8 +24,11 @@ class QuestService {
 		this.quests.length = 0;
 		this.currentQuest = null;
 
+		const icons = Utils.randomSlice(QuestIcons, 3);
+
 		for (let i = 0; i < 3; i++) {
 			this.quests[i] = this._generateQuest(ItemRarity.Common);
+			this.quests[i].icon = icons[i];
 		}
 
 		this.state = QuestState.Selection;
@@ -86,6 +90,7 @@ class QuestService {
 		this._addExtraRequirements(quest);
 
 		quest.successRate = this.calculateSuccessRate(quest);
+		quest.rewardPlaceholderItem = this.itemGenerator.generate(1, Slots[Utils.random(0, 7)], ItemRarity.Common, false);
 
 		return quest;
 	}
@@ -129,7 +134,7 @@ class QuestService {
 		const requirements = QuestProgression[index];
 
 		requirements.forEach(req => {
-			const stats = Utils.shuffle(req.stats.slice(0)).slice(0, req.count);
+			const stats = Utils.randomSlice(req.stats, req.count);
 
 			stats.forEach(stat => {
 				quest.requirements[stat] = GearSnapshot[stat][quest.level - 1] * req.multiplier;

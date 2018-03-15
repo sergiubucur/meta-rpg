@@ -19,4 +19,8 @@ export default class Utils {
 
 		return a;
 	}
+
+	static randomSlice(array, count) {
+		return this.shuffle(array.slice(0)).slice(0, count);
+	}
 }

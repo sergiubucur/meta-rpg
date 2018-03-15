@@ -113,7 +113,22 @@ export default class ItemTooltip extends Component {
 		}
 
 		const rarityClass = item ? RarityClass[item.rarity] : undefined;
-		const className = classNames("item-tooltip", { [rarityClass]: rarityClass });
+		const className = classNames("item-tooltip", { [rarityClass]: rarityClass }, { reward: source === "reward" });
+
+		if (source === "reward") {
+			return (
+				<div className={className} style={{ left: x, top: y }}>
+					<div>
+						Random item of any slot, <br />
+						with a level requirement equal to <br/>
+						or slightly above your current level.
+					</div>
+					<div>
+						Can be <span className="rarity-common">Common</span>, <span className="rarity-rare">Rare</span> or <span className="rarity-epic">Epic</span>.
+					</div>
+				</div>
+			);
+		}
 
 		return (
 			<div className={className} style={{ left: x, top: y }}>

@@ -1,5 +1,47 @@
 @import "../../common/common.less";
 
 .quest-screen {
-	padding: 22px 35px 22px 35px;
+	overflow: hidden;
+
+	.icon {
+		font-size: 64px;
+	}
+
+	.quest-selection {
+		display: flex;
+
+		.quest {
+			flex-basis: 320px;
+			border-right: 1px solid @border-color;
+			height: 512px;
+			display: flex;
+			flex-direction: column;
+
+			&:last-child {
+				border-right: 0;
+			}
+
+			.section {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+
+				&.quest-icon {
+					flex: 0 1 160px;
+				}
+
+				&.requirements {
+					flex: 0 1 160px;
+				}
+
+				&.reward {
+					flex: 0 1 64px;
+				}
+
+				&.start-button {
+					flex: 0 1 128px;
+				}
+			}
+		}
+	}
 }

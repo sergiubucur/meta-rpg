@@ -142,10 +142,7 @@ export default class ItemGenerator {
 		}
 
 		const bonusCount = Utils.random(min, max);
-
-		let bonus = Object.keys(item.bonus);
-		Utils.shuffle(bonus);
-		bonus = bonus.slice(0, bonusCount);
+		const bonus = Utils.randomSlice(Object.keys(item.bonus), bonusCount);
 
 		bonus.forEach(key => {
 			item.bonus[key] = Math.floor(this._randomize(coeff));

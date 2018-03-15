@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import "./QuestScreen.less";
 import questService from "common/services/QuestService";
+import Item from "common/components/item/Item";
 
 export default class QuestScreen extends Component {
 	state = {
@@ -36,32 +37,34 @@ export default class QuestScreen extends Component {
 
 	render() {
 		const { quests } = questService;
-		const { message } = this.state;
 
 		return (
 			<div className="quest-screen">
-				{message &&
-					<div>
-						<div className={message === "Quest completed successfully!" ? "positive" : "negative"}>
-							Result: {message}
+				<div className="quest-selection">
+					{quests.map((quest, i) => (
+						<div className="quest" key={i}>
+							<div className="section quest-icon">
+								<div className="icon"><i className={`ra ${quest.icon}`} /></div>
+							</div>
+							<div className="section requirements">
+								<div>Requirements: {Object.keys(quest.requirements).filter(x => quest.requirements[x] > 0).map(x => x + " " + quest.requirements[x]).join(", ")}</div>
+							</div>
+							<div className="section reward">
+								<div className="item-reward-container">
+									<Item item={quest.rewardPlaceholderItem} draggable={false} source="reward" />
+								</div>
+
+								<div>{quest.successRate.toFixed(2) * 100}% Chance</div>
+							</div>
+							<div className="section start-button">
+								<button
+									type="button"
+									disabled={quest.successRate === 0}
+									onClick={() => this.handleQuestClick(quest)}>Start Quest</button>
+							</div>
 						</div>
-
-						<br />
-					</div>
-				}
-
-				{quests.map((quest, i) => (
-					<div className="quest" key={i}>
-						<div>Requirements: {Object.keys(quest.requirements).filter(x => quest.requirements[x] > 0).map(x => x + " " + quest.requirements[x]).join(", ")}</div>
-						<div>Success rate: {quest.successRate.toFixed(2) * 100}%</div>
-
-						<br />
-
-						<button type="button" onClick={() => this.handleQuestClick(quest)}>Attempt</button>
-
-						<br /><br />
-					</div>
-				))}
+					))}
+				</div>
 			</div>
 		);
 	}
