@@ -27,15 +27,48 @@
 				align-items: center;
 
 				&.quest-icon {
-					flex: 0 1 160px;
+					flex: 0 1 100px;
+					align-items: flex-end;
+
+					.icon {
+						width: 64px;
+						height: 64px;
+					}
 				}
 
 				&.requirements {
-					flex: 0 1 160px;
+					flex: 1 0;
+
+					.quest-requirements {
+						flex: 0 1 280px;
+
+						.row {
+							display: flex;
+							align-items: center;
+
+							i {
+								flex: 0 1 26px;
+							}
+
+							.name {
+								flex: 1 0 168px;
+							}
+
+							.values {
+								flex: 0 1 86px;
+								text-align: right;
+							}
+						}
+					}
 				}
 
 				&.reward {
-					flex: 0 1 64px;
+					flex: 0 1 100px;
+
+					.chance {
+						font-weight: bold;
+						font-size: 1.2em;
+					}
 
 					.item-reward-container {
 						margin-right: 10px;
@@ -43,7 +76,8 @@
 				}
 
 				&.start-button {
-					flex: 0 1 128px;
+					flex: 0 1 90px;
+					align-items: flex-start;
 				}
 			}
 		}

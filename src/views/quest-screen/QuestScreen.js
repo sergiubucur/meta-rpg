@@ -1,6 +1,8 @@
 import React, { Component } from "react";
+import classNames from "classnames";
 
 import "./QuestScreen.less";
+import QuestRequirements from "./QuestRequirements";
 import questService from "common/services/QuestService";
 import Item from "common/components/item/Item";
 
@@ -11,6 +13,7 @@ export default class QuestScreen extends Component {
 
 	componentWillMount() {
 		questService.generateQuests();
+		questService.calculateSuccessRates();
 	}
 
 	handleQuestClick = (quest) => {
@@ -30,6 +33,7 @@ export default class QuestScreen extends Component {
 			}
 
 			questService.generateQuests();
+			questService.calculateSuccessRates();
 
 			this.setState({ message });
 		});
@@ -47,14 +51,18 @@ export default class QuestScreen extends Component {
 								<div className="icon"><i className={`ra ${quest.icon}`} /></div>
 							</div>
 							<div className="section requirements">
-								<div>Requirements: {Object.keys(quest.requirements).filter(x => quest.requirements[x] > 0).map(x => x + " " + quest.requirements[x]).join(", ")}</div>
+								<QuestRequirements quest={quest} />
 							</div>
 							<div className="section reward">
 								<div className="item-reward-container">
 									<Item item={quest.rewardPlaceholderItem} draggable={false} source="reward" />
 								</div>
 
-								<div>{quest.successRate.toFixed(2) * 100}% Chance</div>
+								<div>
+									<span className={classNames("chance", quest.successRate >= 0.5 ? "positive" : "negative")}>
+										{Math.floor(quest.successRate * 100)}%
+									</span> Chance
+								</div>
 							</div>
 							<div className="section start-button">
 								<button

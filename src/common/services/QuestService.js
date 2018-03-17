@@ -34,6 +34,12 @@ class QuestService {
 		this.state = QuestState.Selection;
 	}
 
+	calculateSuccessRates() {
+		this.quests.forEach(x => {
+			Object.assign(x, this._getSuccessRateData(x));
+		});
+	}
+
 	attemptQuest(quest) {
 		this.currentQuest = quest;
 		this.state = QuestState.Attempt;
@@ -89,7 +95,6 @@ class QuestService {
 
 		this._addExtraRequirements(quest);
 
-		quest.successRate = this.calculateSuccessRate(quest);
 		quest.rewardPlaceholderItem = this.itemGenerator.generate(1, Slots[Utils.random(0, 7)], ItemRarity.Common, false);
 
 		return quest;
@@ -105,28 +110,36 @@ class QuestService {
 		return this.itemGenerator.generate(quest.level, slot, quest.rarity);
 	}
 
-	calculateSuccessRate(quest) {
+	_getSuccessRateData(quest) {
 		const { stats } = characterService;
 
 		const rate = {};
+		const currentStats = {};
 
 		Object.keys(quest.requirements).forEach(key => {
 			const requirement = quest.requirements[key];
-			const stat = stats[key];
 
 			if (requirement > 0) {
 				rate[key] = 1;
-				if (stat / requirement < 0.9) {
+
+				if (stats[key] / requirement < 0.9) {
 					rate[key] = 0;
 				}
+
+				currentStats[key] = stats[key];
 			}
 		});
 
-		if (rate.damage === 0 || rate.armor === 0) {
-			return 0;
+		let successRate = 0;
+		if (rate.damage === 1 && rate.armor === 1) {
+			successRate = Object.keys(rate).reduce((a, x) => a + rate[x], 0) / Object.keys(rate).length;
 		}
 
-		return Object.keys(rate).reduce((a, x) => a + rate[x], 0) / Object.keys(rate).length;
+		return {
+			successRatePerAttribute: rate,
+			successRate,
+			currentStats
+		};
 	}
 
 	_addExtraRequirements(quest) {

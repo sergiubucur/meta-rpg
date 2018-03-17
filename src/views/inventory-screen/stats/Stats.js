@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import "./Stats.less";
 import characterService from "common/services/CharacterService";
+import StatIcon from "common/components/item/StatIcon";
 
 const StatRow = ({ icon, value, name }) => (
 	<div>
@@ -28,16 +29,16 @@ class Stats extends Component {
 		return (
 			<div className="stats">
 				<div className="category">
-					<StatRow name="Damage" value={stats.damage} icon="ra ra-sword" />
-					<StatRow name="Fire Damage" value={stats.fireDamage} icon="ra ra-flame-symbol" />
-					<StatRow name="Frost Damage" value={stats.frostDamage} icon="ra ra-kaleidoscope" />
-					<StatRow name="Lightning Damage" value={stats.lightningDamage} icon="ra ra-lightning-bolt" />
+					<StatRow name="Damage" value={stats.damage} icon={StatIcon.damage} />
+					<StatRow name="Fire Damage" value={stats.fireDamage} icon={StatIcon.fireDamage} />
+					<StatRow name="Frost Damage" value={stats.frostDamage} icon={StatIcon.frostDamage} />
+					<StatRow name="Lightning Damage" value={stats.lightningDamage} icon={StatIcon.lightningDamage} />
 				</div>
 				<div className="category">
-					<StatRow name="Armor" value={stats.armor} icon="ra ra-heavy-shield" />
-					<StatRow name="Fire Resistance" value={stats.fireResist} icon="ra ra-flame-symbol" />
-					<StatRow name="Frost Resistance" value={stats.frostResist} icon="ra ra-kaleidoscope" />
-					<StatRow name="Lightning Resistance" value={stats.lightningResist} icon="ra ra-lightning-bolt" />
+					<StatRow name="Armor" value={stats.armor} icon={StatIcon.armor} />
+					<StatRow name="Fire Resistance" value={stats.fireResist} icon={StatIcon.fireResist} />
+					<StatRow name="Frost Resistance" value={stats.frostResist} icon={StatIcon.frostResist} />
+					<StatRow name="Lightning Resistance" value={stats.lightningResist} icon={StatIcon.lightningResist} />
 				</div>
 			</div>
 		);
