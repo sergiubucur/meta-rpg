@@ -16,18 +16,20 @@ class QuestService {
 
 	quests = [];
 	currentQuest = null;
-	questSuccess = false;
+	questResult = null;
 
 	generateQuests() {
 		this.quests.length = 0;
 		this.currentQuest = null;
-		this.questSuccess = false;
+		this.questResult = null;
 
 		const icons = Utils.randomSlice(QuestIcons, 3);
 
 		for (let i = 0; i < 3; i++) {
-			this.quests[i] = this._generateQuest(ItemRarity.Common);
-			this.quests[i].icon = icons[i];
+			const quest = this._generateQuest(ItemRarity.Common);
+			quest.icon = icons[i];
+
+			this.quests.push(quest);
 		}
 	}
 
@@ -42,7 +44,7 @@ class QuestService {
 	}
 
 	completeQuest() {
-		this.questSuccess = this.isQuestSuccessful(this.currentQuest);
+		this.questResult = this.isQuestSuccessful(this.currentQuest);
 	}
 
 	acquireReward() {

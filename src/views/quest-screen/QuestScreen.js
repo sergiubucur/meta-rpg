@@ -1,42 +1,27 @@
 import React, { Component } from "react";
-import classNames from "classnames";
 
 import "./QuestScreen.less";
-import QuestRequirements from "./QuestRequirements";
 import questService from "common/services/QuestService";
-import Item from "common/components/item/Item";
+import QuestSelection from "./QuestSelection";
 
 export default class QuestScreen extends Component {
-	state = {
-		message: null
-	}
-
 	componentWillMount() {
 		questService.generateQuests();
 		questService.calculateSuccessRates();
 	}
 
-	handleQuestClick = (quest) => {
-		this.setState({
-			message: null
-		}, () => {
-			questService.startQuest(quest);
-			questService.completeQuest();
+	handleStartQuestClick = (quest) => {
+		questService.startQuest(quest);
+		questService.completeQuest();
 
-			let message = "Quest failed.";
-			if (questService.questSuccess) {
-				if (!questService.acquireReward()) {
-					message = "Quest succeeded but inventory was full, so no reward."
-				} else {
-					message = "Quest completed successfully!";
-				}
-			}
+		if (questService.questResult) {
+			questService.acquireReward();
+		}
 
-			questService.generateQuests();
-			questService.calculateSuccessRates();
+		questService.generateQuests();
+		questService.calculateSuccessRates();
 
-			this.setState({ message });
-		});
+		this.forceUpdate();
 	}
 
 	render() {
@@ -44,35 +29,7 @@ export default class QuestScreen extends Component {
 
 		return (
 			<div className="quest-screen">
-				<div className="quest-selection">
-					{quests.map((quest, i) => (
-						<div className="quest" key={i}>
-							<div className="section quest-icon">
-								<div className="icon"><i className={`ra ${quest.icon}`} /></div>
-							</div>
-							<div className="section requirements">
-								<QuestRequirements quest={quest} />
-							</div>
-							<div className="section reward">
-								<div className="item-reward-container">
-									<Item item={quest.rewardPlaceholderItem} draggable={false} source="reward" />
-								</div>
-
-								<div>
-									<span className={classNames("chance", quest.successRate >= 0.5 ? "positive" : "negative")}>
-										{Math.floor(quest.successRate * 100)}%
-									</span> Chance
-								</div>
-							</div>
-							<div className="section start-button">
-								<button
-									type="button"
-									disabled={quest.successRate === 0}
-									onClick={() => this.handleQuestClick(quest)}>Start Quest</button>
-							</div>
-						</div>
-					))}
-				</div>
+				<QuestSelection quests={quests} onStartQuest={this.handleStartQuestClick} />
 			</div>
 		);
 	}
