@@ -31,24 +31,32 @@ class QuestService {
 
 			this.quests.push(quest);
 		}
+
+		this.calculateSuccessRates();
 	}
 
 	calculateSuccessRates() {
 		this.quests.forEach(x => {
 			Object.assign(x, this._getSuccessRateData(x));
 		});
+
+		this.events.dispatch("update");
 	}
 
 	startQuest(quest) {
 		this.currentQuest = quest;
+
+		this.events.dispatch("update");
 	}
 
 	completeQuest() {
-		this.questResult = this.isQuestSuccessful(this.currentQuest);
+		this.questResult = this._isQuestSuccessful(this.currentQuest);
+
+		this.events.dispatch("update");
 	}
 
-	acquireReward() {
-		const item = this.generateQuestReward(this.currentQuest);
+	getReward() {
+		const item = this._generateQuestReward(this.currentQuest);
 
 		if (inventoryService.addItem(item)) {
 			characterService.gainXp(this.currentQuest.xp);
@@ -93,11 +101,11 @@ class QuestService {
 		return quest;
 	}
 
-	isQuestSuccessful(quest) {
+	_isQuestSuccessful(quest) {
 		return Math.random() < quest.successRate;
 	}
 
-	generateQuestReward(quest) {
+	_generateQuestReward(quest) {
 		const slot = Slots[Utils.random(0, 7)];
 
 		return this.itemGenerator.generate(quest.level, slot, quest.rarity);

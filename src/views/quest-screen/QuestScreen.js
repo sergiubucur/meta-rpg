@@ -3,33 +3,37 @@ import React, { Component } from "react";
 import "./QuestScreen.less";
 import questService from "common/services/QuestService";
 import QuestSelection from "./QuestSelection";
+import QuestProgress from "./QuestProgress";
 
 export default class QuestScreen extends Component {
-	componentWillMount() {
-		questService.generateQuests();
-		questService.calculateSuccessRates();
+	componentDidMount() {
+		this.updateListener = questService.events.addListener("update", () => {
+			this.forceUpdate();
+		});
+
+		if (!questService.currentQuest) {
+			questService.generateQuests();
+		} else {
+			questService.calculateSuccessRates();
+		}
+	}
+
+	componentWillUnmount() {
+		questService.events.removeListener("update", this.updateListener);
 	}
 
 	handleStartQuestClick = (quest) => {
 		questService.startQuest(quest);
 		questService.completeQuest();
-
-		if (questService.questResult) {
-			questService.acquireReward();
-		}
-
-		questService.generateQuests();
-		questService.calculateSuccessRates();
-
-		this.forceUpdate();
 	}
 
 	render() {
-		const { quests } = questService;
+		const { quests, currentQuest } = questService;
 
 		return (
 			<div className="quest-screen">
-				<QuestSelection quests={quests} onStartQuest={this.handleStartQuestClick} />
+				{!currentQuest && <QuestSelection quests={quests} onStartQuest={this.handleStartQuestClick} />}
+				{currentQuest && <QuestProgress />}
 			</div>
 		);
 	}

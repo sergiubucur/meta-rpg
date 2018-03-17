@@ -11,13 +11,12 @@ const ItemsPerPage = 7;
 
 class VendorService {
 	events = new EventDispatcher();
+	itemGenerator = new ItemGenerator();
 
 	items = [];
 	screenData = null;
 
 	constructor() {
-		this.itemGenerator = new ItemGenerator();
-
 		this._generateItems();
 	}
 
