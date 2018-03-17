@@ -82,4 +82,39 @@
 			}
 		}
 	}
+
+	.quest-progress-bar {
+		width: 600px;
+		height: 34px;
+		border: 1px solid @border-color;
+		border-radius: 4px;
+
+		.bar {
+			height: 32px;
+			background: #300030;
+			border-right: 1px solid @border-color;
+			overflow: hidden;
+			position: relative;
+
+			.flash {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				z-index: 1;
+
+				background: @border-color;
+				width: 0;
+				margin-top: -16px;
+				height: 32px;
+				box-shadow: 0px 0px 100px 10px rgba(255,0,255,1);
+				transform: rotate(45deg);
+				animation: progressBarFlash 1s ease-in-out infinite;
+			}
+		}
+	}
+}
+
+@keyframes progressBarFlash {
+	from { left: -100px }
+	to { left: calc(100% + 100px) }
 }

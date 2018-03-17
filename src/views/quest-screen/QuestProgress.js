@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { withRouter } from "react-router-3";
 
 import questService from "common/services/QuestService";
+import QuestProgressBar from "./QuestProgressBar";
 
 class QuestProgress extends Component {
 	state = {
@@ -32,7 +33,13 @@ class QuestProgress extends Component {
 
 		return (
 			<div className="quest-progress">
-				{questResult === null && <div>Quest In Progress</div>}
+				{questResult === null &&
+					<div>
+						Quest In Progress
+
+						<QuestProgressBar value={0.25} />
+					</div>
+				}
 
 				{questResult !== null &&
 					<div>
