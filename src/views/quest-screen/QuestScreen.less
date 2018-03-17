@@ -97,6 +97,14 @@
 			overflow: hidden;
 			position: relative;
 
+			&.full {
+				border: 0;
+
+				.flash {
+					animation: progressBarFlash 3s ease-in-out infinite alternate;
+				}
+			}
+
 			.flash {
 				position: absolute;
 				top: 50%;

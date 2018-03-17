@@ -38,7 +38,7 @@ class QuestProgress extends Component {
 						Quest In Progress
 
 						<div>
-							<QuestProgressBar value={0.25} />
+							<QuestProgressBar value={1} />
 						</div>
 					</div>
 				}
