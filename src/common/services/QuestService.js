@@ -8,7 +8,6 @@ import ItemRarity from "common/components/item/ItemRarity";
 import Slots from "common/components/item/Slots";
 import Utils from "common/Utils";
 import QuestProgression from "./data/QuestProgression";
-import QuestState from "./data/QuestState";
 import QuestIcons from "./data/QuestIcons";
 
 class QuestService {
@@ -18,11 +17,11 @@ class QuestService {
 	quests = [];
 	currentQuest = null;
 	questSuccess = false;
-	state = QuestState.PreSelection;
 
 	generateQuests() {
 		this.quests.length = 0;
 		this.currentQuest = null;
+		this.questSuccess = false;
 
 		const icons = Utils.randomSlice(QuestIcons, 3);
 
@@ -30,8 +29,6 @@ class QuestService {
 			this.quests[i] = this._generateQuest(ItemRarity.Common);
 			this.quests[i].icon = icons[i];
 		}
-
-		this.state = QuestState.Selection;
 	}
 
 	calculateSuccessRates() {
@@ -40,28 +37,22 @@ class QuestService {
 		});
 	}
 
-	attemptQuest(quest) {
+	startQuest(quest) {
 		this.currentQuest = quest;
-		this.state = QuestState.Attempt;
 	}
 
 	completeQuest() {
 		this.questSuccess = this.isQuestSuccessful(this.currentQuest);
-		this.state = QuestState.Completion;
 	}
 
 	acquireReward() {
-		if (inventoryService.hasRoom()) {
-			const item = this.generateQuestReward(this.currentQuest);
+		const item = this.generateQuestReward(this.currentQuest);
 
-			if (inventoryService.addItem(item)) {
-				characterService.gainXp(this.currentQuest.xp);
-				characterService.modifyGold(this.currentQuest.gold);
+		if (inventoryService.addItem(item)) {
+			characterService.gainXp(this.currentQuest.xp);
+			characterService.modifyGold(this.currentQuest.gold);
 
-				return true;
-			}
-
-			return false;
+			return true;
 		}
 
 		return false;

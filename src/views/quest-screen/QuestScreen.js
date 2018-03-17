@@ -20,7 +20,7 @@ export default class QuestScreen extends Component {
 		this.setState({
 			message: null
 		}, () => {
-			questService.attemptQuest(quest);
+			questService.startQuest(quest);
 			questService.completeQuest();
 
 			let message = "Quest failed.";
