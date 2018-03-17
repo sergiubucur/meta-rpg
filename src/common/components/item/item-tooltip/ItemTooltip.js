@@ -88,6 +88,8 @@ export default class ItemTooltip extends Component {
 
 		return (
 			<div>
+				<div style={{ marginBottom: 5 }}>Versus current item:</div>
+
 				{Object.keys(stats).map(key => {
 					const stat = stats[key];
 
@@ -120,7 +122,7 @@ export default class ItemTooltip extends Component {
 				<div className={className} style={{ left: x, top: y }}>
 					<div>
 						Random item of any slot, <br />
-						with a level requirement equal to <br/>
+						with a level requirement equal to <br />
 						or slightly above your current level.
 					</div>
 					<div>
