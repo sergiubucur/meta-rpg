@@ -13,6 +13,8 @@ import QuestIcons from "./data/QuestIcons";
 import TimeTracker from "common/TimeTracker";
 import persistenceService from "./PersistenceService";
 
+const UpdateInterval = 3600;
+
 class QuestService {
 	events = new EventDispatcher();
 	itemGenerator = new ItemGenerator();
@@ -20,6 +22,8 @@ class QuestService {
 	quests = [];
 	currentQuest = null;
 	questResult = null;
+	lastUpdated = new Date();
+
 	percentComplete = 0;
 	durationLeft = "";
 	notify = false;
@@ -31,11 +35,17 @@ class QuestService {
 			this.quests = data.questData.quests;
 			this.currentQuest = data.questData.currentQuest;
 			this.questResult = data.questData.questResult;
+			this.lastUpdated = data.questData.lastUpdated;
 
 			this._convertDatesToObjects();
 
 			if (this.currentQuest) {
 				this._startTimeTracker();
+			} else {
+				if (Math.floor((new Date() - moment(this.lastUpdated).toDate()) / 1000) >= UpdateInterval) {
+					this.lastUpdated = new Date();
+					this.generateQuests();
+				}
 			}
 		}
 
@@ -53,6 +63,7 @@ class QuestService {
 		data.questData.quests = this.quests;
 		data.questData.currentQuest = this.currentQuest;
 		data.questData.questResult = this.questResult;
+		data.questData.lastUpdated = this.lastUpdated;
 
 		persistenceService.save(data);
 	}

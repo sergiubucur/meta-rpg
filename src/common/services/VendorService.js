@@ -1,4 +1,6 @@
 import EventDispatcher from "simple-event-dispatcher";
+import moment from "moment";
+
 import ItemGenerator from "common/components/item/ItemGenerator";
 import ItemRarity from "common/components/item/ItemRarity";
 import Utils from "common/Utils";
@@ -9,22 +11,30 @@ import persistenceService from "./PersistenceService";
 
 const ItemCount = 100;
 const ItemsPerPage = 7;
+const UpdateInterval = 3600;
 
 class VendorService {
 	events = new EventDispatcher();
 	itemGenerator = new ItemGenerator();
 
 	items = [];
+	lastUpdated = new Date();
 	screenData = null;
 
 	constructor() {
 		const data = persistenceService.load();
 
-		if (data && data.vendorItems) {
-			this.items = data.vendorItems;
+		if (data && data.vendor) {
+			this.items = data.vendor.items;
+			this.lastUpdated = data.vendor.lastUpdated;
 
-			this._resetScreenData();
-			this._refreshScreenItems();
+			if (Math.floor((new Date() - moment(this.lastUpdated).toDate()) / 1000) >= UpdateInterval) {
+				this.lastUpdated = new Date();
+				this._generateItems();
+			} else {
+				this._resetScreenData();
+				this._refreshScreenItems();
+			}
 		} else {
 			this._generateItems();
 		}
@@ -32,8 +42,10 @@ class VendorService {
 
 	save() {
 		const data = persistenceService.load() || {};
+		data.vendor = data.vendor || {};
 
-		data.vendorItems = this.items;
+		data.vendor.items = this.items;
+		data.vendor.lastUpdated = this.lastUpdated;
 
 		persistenceService.save(data);
 	}
