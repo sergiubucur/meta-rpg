@@ -6,7 +6,7 @@ const QuestProgressBar = ({ value }) => {
 	return (
 		<div className="quest-progress-bar">
 			<div
-				className={classNames("bar", { full: value === 1 })}
+				className={classNames("bar", { "no-border": value === 0 || value === 1 })}
 				style={{ width: `${Math.ceil(value * 100)}%` }}>
 				<div className="flash" />
 			</div>

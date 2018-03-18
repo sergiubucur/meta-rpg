@@ -1,4 +1,5 @@
 import EventDispatcher from "simple-event-dispatcher";
+import moment from "moment";
 
 import GearSnapshot from "./data/GearSnapshot";
 import characterService from "./CharacterService";
@@ -9,6 +10,7 @@ import Slots from "common/components/item/Slots";
 import Utils from "common/Utils";
 import QuestProgression from "./data/QuestProgression";
 import QuestIcons from "./data/QuestIcons";
+import TimeTracker from "common/TimeTracker";
 
 class QuestService {
 	events = new EventDispatcher();
@@ -17,11 +19,15 @@ class QuestService {
 	quests = [];
 	currentQuest = null;
 	questResult = null;
+	percentComplete = 0;
+	durationLeft = "";
 
 	generateQuests() {
 		this.quests.length = 0;
 		this.currentQuest = null;
 		this.questResult = null;
+		this.percentComplete = 0;
+		this.durationLeft = "";
 
 		const icons = Utils.randomSlice(QuestIcons, 3);
 
@@ -45,6 +51,29 @@ class QuestService {
 
 	startQuest(quest) {
 		this.currentQuest = quest;
+
+		const timeTracker = new TimeTracker({
+			startDate: moment().toDate(),
+			endDate: moment().add(1, "minutes").toDate()
+		}, () => {
+			this.percentComplete = timeTracker.getPercentComplete();
+			this.durationLeft = timeTracker.getDurationLeft();
+
+			if (this.percentComplete === 1) {
+				this.completeQuest();
+				return;
+			}
+
+			this.events.dispatch("update");
+		}, 1000);
+
+		if (timeTracker.getPercentComplete() === 1) {
+			this.completeQuest();
+			return;
+		}
+
+		this.percentComplete = timeTracker.getPercentComplete();
+		this.durationLeft = timeTracker.getDurationLeft();
 
 		this.events.dispatch("update");
 	}

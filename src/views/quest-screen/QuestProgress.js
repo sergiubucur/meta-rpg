@@ -29,7 +29,7 @@ class QuestProgress extends Component {
 
 	render() {
 		const { inventoryError } = this.state;
-		const { currentQuest, questResult } = questService;
+		const { currentQuest, questResult, percentComplete, durationLeft } = questService;
 
 		return (
 			<div className="quest-progress">
@@ -53,7 +53,7 @@ class QuestProgress extends Component {
 
 					{questResult === null &&
 						<div className="eta">
-							00:59:59
+							{durationLeft}
 						</div>
 					}
 				</div>
@@ -61,7 +61,7 @@ class QuestProgress extends Component {
 				<div className="section progress">
 					{questResult === null &&
 						<div>
-							<QuestProgressBar value={1} />
+							<QuestProgressBar value={percentComplete} />
 						</div>
 					}
 

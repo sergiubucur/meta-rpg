@@ -24,7 +24,6 @@ export default class QuestScreen extends Component {
 
 	handleStartQuestClick = (quest) => {
 		questService.startQuest(quest);
-		// questService.completeQuest();
 	}
 
 	render() {

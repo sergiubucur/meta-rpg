@@ -1,41 +1,34 @@
-import EventDispatcher from "simple-event-dispatcher";
+import moment from "moment";
+import momentDurationFormatSetup from "moment-duration-format";
+
+momentDurationFormatSetup(moment);
 
 export default class TimeTracker {
-	events = new EventDispatcher();
-
-	interval = null;
 	trackingData = null;
 
-	track(trackingData, frequency = 10000) {
+	constructor(trackingData, onUpdate, frequency) {
 		if (!(trackingData.startDate instanceof Date && trackingData.endDate instanceof Date)) {
 			throw new Error("startDate/endDate must be Date objects");
 		}
 
 		this.trackingData = trackingData;
+		this.onUpdate = onUpdate;
 
-		if (this.interval) {
-			clearInterval(this.interval);
-			this.interval = null;
+		if (this.getPercentComplete() === 1) {
+			return;
 		}
 
-		if (this._calculatePercentComplete() === 100) {
-			return true;
-		}
+		const interval = setInterval(() => {
+			const percentComplete = this.getPercentComplete();
+			this.onUpdate();
 
-		this.interval = setInterval(() => {
-			const percentComplete = this._calculatePercentComplete();
-			this.events.dispatch("update", percentComplete);
-
-			if (percentComplete === 100) {
-				clearInterval(this.interval);
-				this.interval = null;
+			if (percentComplete === 1) {
+				clearInterval(interval);
 			}
 		}, frequency);
-
-		return false;
 	}
 
-	_calculatePercentComplete() {
+	getPercentComplete() {
 		const now = new Date();
 
 		if (now <= this.trackingData.startDate) {
@@ -43,12 +36,23 @@ export default class TimeTracker {
 		}
 
 		if (now >= this.trackingData.endDate) {
-			return 100;
+			return 1;
 		}
 
 		const total = Math.floor((this.trackingData.endDate - this.trackingData.startDate) / 1000);
 		const current = Math.floor((now - this.trackingData.startDate) / 1000);
 
-		return Math.floor((current / total) * 100);
+		return current / total;
+	}
+
+	getDurationLeft() {
+		const now = new Date();
+
+		if (now >= this.trackingData.endDate) {
+			return "00:00:00";
+		}
+
+		const duration = moment.duration(Math.floor((this.trackingData.endDate - now) / 1000) + 1, "seconds");
+		return duration.format("hh:mm:ss", { trim: false });
 	}
 }
