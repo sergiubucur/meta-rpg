@@ -4,6 +4,7 @@ import ItemGenerator from "common/components/item/ItemGenerator";
 import ItemRarity from "common/components/item/ItemRarity";
 import characterService from "./CharacterService";
 import Slots from "common/components/item/Slots";
+import persistenceService from "./PersistenceService";
 
 export const InventoryWidth = 10;
 export const InventoryHeight = 8;
@@ -27,12 +28,29 @@ class InventoryService {
 	highlightItem = null;
 
 	constructor() {
-		this.buildMatrix();
+		const data = persistenceService.load();
 
-		this.gear.mainHand = this.itemGenerator.generate(1, "mainHand", ItemRarity.Common, false);
-		this.gear.chest = this.itemGenerator.generate(1, "chest", ItemRarity.Common, false);
+		if (data && data.inventory && data.gear) {
+			this.inventory = data.inventory;
+			this.gear = data.gear;
+		} else {
+			this.buildMatrix();
+
+			this.gear.mainHand = this.itemGenerator.generate(1, "mainHand", ItemRarity.Common, false);
+			this.gear.chest = this.itemGenerator.generate(1, "chest", ItemRarity.Common, false);
+		}
 
 		characterService.updateStats(this.gear);
+		this.save();
+	}
+
+	save() {
+		const data = persistenceService.load() || {};
+
+		data.inventory = this.inventory;
+		data.gear = this.gear;
+
+		persistenceService.save(data);
 	}
 
 	buildMatrix() {
@@ -68,6 +86,7 @@ class InventoryService {
 			this.inventory[src.y][src.x] = this.inventory[dest.y][dest.x];
 			this.inventory[dest.y][dest.x] = aux;
 
+			this.save();
 			this.events.dispatch("update");
 		}
 
@@ -80,6 +99,7 @@ class InventoryService {
 				this.inventory[dest.y][dest.x] = srcItem;
 
 				characterService.updateStats(this.gear);
+				this.save();
 				this.events.dispatch("update");
 			}
 		}
@@ -92,6 +112,7 @@ class InventoryService {
 				this.gear[aux.slot] = aux;
 
 				characterService.updateStats(this.gear);
+				this.save();
 				this.events.dispatch("update");
 			}
 		}
@@ -116,6 +137,7 @@ class InventoryService {
 
 		characterService.modifyGold(value);
 
+		this.save();
 		this.events.dispatch("update");
 		this.itemDragEnd();
 	}
@@ -128,6 +150,7 @@ class InventoryService {
 		}
 
 		this.inventory[location.y][location.x] = item;
+		this.save();
 		this.events.dispatch("update");
 
 		return true;
@@ -190,6 +213,7 @@ class InventoryService {
 			this.inventory[0][i] = this.itemGenerator.generate(itemLevel, x);
 		});
 
+		this.save();
 		this.events.dispatch("update");
 		characterService.events.dispatch("update");
 	}

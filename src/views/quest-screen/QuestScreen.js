@@ -12,8 +12,6 @@ export default class QuestScreen extends Component {
 		});
 
 		if (!questService.currentQuest) {
-			questService.generateQuests();
-		} else {
 			questService.calculateSuccessRates();
 		}
 	}

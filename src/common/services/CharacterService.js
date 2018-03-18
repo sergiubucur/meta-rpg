@@ -1,6 +1,7 @@
 import EventDispatcher from "simple-event-dispatcher";
 
 import XpToNextLevel, { TotalXpToLevel, MaxXp } from "./data/XpToNextLevel";
+import persistenceService from "./PersistenceService";
 
 const MaxGold = 99999;
 
@@ -13,12 +14,38 @@ class CharacterService {
 	gold = 0;
 	stats = {};
 
+	constructor() {
+		const data = persistenceService.load();
+
+		if (data && data.character) {
+			this.level = data.character.level;
+			this.xp = data.character.xp;
+			this.xpToNextLevel = data.character.xpToNextLevel;
+			this.gold = data.character.gold;
+		}
+
+		this.save();
+	}
+
+	save() {
+		const data = persistenceService.load() || {};
+		data.character = data.character || {};
+
+		data.character.level = this.level;
+		data.character.xp = this.xp;
+		data.character.xpToNextLevel = this.xpToNextLevel;
+		data.character.gold = this.gold;
+
+		persistenceService.save(data);
+	}
+
 	modifyGold(amount) {
 		this.gold += amount;
 		if (this.gold > MaxGold) {
 			this.gold = MaxGold;
 		}
 
+		this.save();
 		this.events.dispatch("update");
 	}
 
@@ -34,6 +61,7 @@ class CharacterService {
 			this.level = level;
 		}
 
+		this.save();
 		this.events.dispatch("update");
 	}
 

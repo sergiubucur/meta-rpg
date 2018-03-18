@@ -5,6 +5,7 @@ import Utils from "common/Utils";
 import characterService from "./CharacterService";
 import inventoryService from "common/services/InventoryService";
 import Slots from "common/components/item/Slots";
+import persistenceService from "./PersistenceService";
 
 const ItemCount = 100;
 const ItemsPerPage = 7;
@@ -17,7 +18,24 @@ class VendorService {
 	screenData = null;
 
 	constructor() {
-		this._generateItems();
+		const data = persistenceService.load();
+
+		if (data && data.vendorItems) {
+			this.items = data.vendorItems;
+
+			this._resetScreenData();
+			this._refreshScreenItems();
+		} else {
+			this._generateItems();
+		}
+	}
+
+	save() {
+		const data = persistenceService.load() || {};
+
+		data.vendorItems = this.items;
+
+		persistenceService.save(data);
 	}
 
 	changeFilter(name, value) {
@@ -144,6 +162,7 @@ class VendorService {
 
 		this._resetScreenData();
 		this._refreshScreenItems();
+		this.save();
 	}
 }
 

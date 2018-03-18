@@ -1,25 +1,12 @@
 import React, { Component } from "react";
 
 import "./SettingsScreen.less";
-import characterService from "common/services/CharacterService";
-import inventoryService from "common/services/InventoryService";
-import vendorService from "common/services/VendorService";
+import persistenceService from "common/services/PersistenceService";
 
 export default class SettingsScreen extends Component {
-	handleLevelUpClick = () => {
-		characterService.cheatLevelUp();
-	}
-
-	handleGiveGoldClick = () => {
-		characterService.cheatGiveGold();
-	}
-
-	handleGiveItemsClick = () => {
-		inventoryService.cheatGiveItems();
-	}
-
-	handleResetVendorClick = () => {
-		vendorService.cheatResetItems();
+	handleResetClick = () => {
+		persistenceService.reset();
+		window.location.reload();
 	}
 
 	render() {
@@ -34,14 +21,7 @@ export default class SettingsScreen extends Component {
 				</div>
 
 				<div className="header">
-					<strong>Cheats</strong>
-
-					<div>
-						<button type="button" onClick={this.handleLevelUpClick}>Level Up</button>
-						<button type="button" onClick={this.handleGiveGoldClick}>Give Gold</button>
-						<button type="button" onClick={this.handleGiveItemsClick}>Give Items</button>
-						<button type="button" onClick={this.handleResetVendorClick}>Reset Vendor</button>
-					</div>
+					<button type="button" onClick={this.handleResetClick}>Reset all data</button>
 				</div>
 
 				<div className="header">

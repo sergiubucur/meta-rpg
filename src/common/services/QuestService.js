@@ -11,6 +11,7 @@ import Utils from "common/Utils";
 import QuestProgression from "./data/QuestProgression";
 import QuestIcons from "./data/QuestIcons";
 import TimeTracker from "common/TimeTracker";
+import persistenceService from "./PersistenceService";
 
 class QuestService {
 	events = new EventDispatcher();
@@ -23,7 +24,38 @@ class QuestService {
 	durationLeft = "";
 	notify = false;
 
-	cheatSkipTime = false;
+	constructor() {
+		const data = persistenceService.load();
+
+		if (data && data.questData) {
+			this.quests = data.questData.quests;
+			this.currentQuest = data.questData.currentQuest;
+			this.questResult = data.questData.questResult;
+
+			this._convertDatesToObjects();
+
+			if (this.currentQuest) {
+				this._startTimeTracker();
+			}
+		}
+
+		if (this.quests.length === 0) {
+			this.generateQuests();
+		} else {
+			this.save();
+		}
+	}
+
+	save() {
+		const data = persistenceService.load() || {};
+		data.questData = data.questData || {};
+
+		data.questData.quests = this.quests;
+		data.questData.currentQuest = this.currentQuest;
+		data.questData.questResult = this.questResult;
+
+		persistenceService.save(data);
+	}
 
 	generateQuests() {
 		this.quests.length = 0;
@@ -43,6 +75,7 @@ class QuestService {
 		}
 
 		this.calculateSuccessRates();
+		this.save();
 	}
 
 	calculateSuccessRates() {
@@ -58,11 +91,40 @@ class QuestService {
 		quest.endDate = this._getQuestEndDate(quest);
 
 		this.currentQuest = quest;
+		this._startTimeTracker();
+		this.save();
+		this.events.dispatch("update");
+	}
 
-		if (this.cheatSkipTime) {
-			this.completeQuest();
-			return;
+	completeQuest() {
+		this.questResult = this._isQuestSuccessful(this.currentQuest);
+
+		this.notify = true;
+		this.save();
+		this.events.dispatch("update");
+	}
+
+	stopNotification() {
+		this.notify = false;
+		this.events.dispatch("update");
+	}
+
+	getReward() {
+		const item = this._generateQuestReward(this.currentQuest);
+
+		if (inventoryService.addItem(item)) {
+			characterService.gainXp(this.currentQuest.xp);
+			characterService.modifyGold(this.currentQuest.gold);
+			inventoryService.setHighlightItem(item);
+
+			return true;
 		}
+
+		return false;
+	}
+
+	_startTimeTracker() {
+		const quest = this.currentQuest;
 
 		const timeTracker = new TimeTracker({
 			startDate: quest.startDate,
@@ -86,34 +148,6 @@ class QuestService {
 
 		this.percentComplete = timeTracker.getPercentComplete();
 		this.durationLeft = timeTracker.getDurationLeft();
-
-		this.events.dispatch("update");
-	}
-
-	completeQuest() {
-		this.questResult = this._isQuestSuccessful(this.currentQuest);
-
-		this.notify = true;
-		this.events.dispatch("update");
-	}
-
-	stopNotification() {
-		this.notify = false;
-		this.events.dispatch("update");
-	}
-
-	getReward() {
-		const item = this._generateQuestReward(this.currentQuest);
-
-		if (inventoryService.addItem(item)) {
-			characterService.gainXp(this.currentQuest.xp);
-			characterService.modifyGold(this.currentQuest.gold);
-			inventoryService.setHighlightItem(item);
-
-			return true;
-		}
-
-		return false;
 	}
 
 	_getQuestEndDate(quest) {
@@ -227,6 +261,25 @@ class QuestService {
 				quest.requirements[stat] = GearSnapshot[stat][quest.level - 1] * req.multiplier;
 			});
 		});
+	}
+
+	_convertQuestDatesToObjects(quest) {
+		if (quest.startDate) {
+			quest.startDate = moment(quest.startDate).toDate();
+		}
+		if (quest.endDate) {
+			quest.endDate = moment(quest.endDate).toDate();
+		}
+	}
+
+	_convertDatesToObjects() {
+		this.quests.forEach(x => {
+			this._convertQuestDatesToObjects(x);
+		});
+
+		if (this.currentQuest) {
+			this._convertQuestDatesToObjects(this.currentQuest);
+		}
 	}
 }
 
