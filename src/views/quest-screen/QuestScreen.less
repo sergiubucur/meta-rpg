@@ -83,6 +83,58 @@
 		}
 	}
 
+	.quest-progress {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		height: 512px;
+
+		.section {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+			&.quest-icon {
+				flex: 0 1 200px;
+				align-items: flex-end;
+
+				.icon {
+					width: 128px;
+					height: 128px;
+					font-size: 128px;
+				}
+			}
+
+			&.chance-eta {
+				flex: 0 1 148px;
+				flex-direction: column;
+
+				.message {
+					font-size: 1.5em;
+					margin-top: 10px;
+				}
+
+				.chance {
+					font-size: 1.5em;
+				}
+
+				.eta {
+					font-size: 3em;
+				}
+			}
+
+			&.progress {
+				flex: 0 1 64px;
+			}
+
+			&.error-message {
+				flex: 0 1 100px;
+				align-items: flex-start;
+				padding-top: 16px;
+			}
+		}
+	}
+
 	.quest-progress-bar {
 		display: inline-block;
 		width: 600px;

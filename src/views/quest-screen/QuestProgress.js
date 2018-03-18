@@ -29,34 +29,53 @@ class QuestProgress extends Component {
 
 	render() {
 		const { inventoryError } = this.state;
-		const { questResult } = questService;
+		const { currentQuest, questResult } = questService;
 
 		return (
 			<div className="quest-progress">
-				{questResult === null &&
-					<div>
-						Quest In Progress
+				<div className="section quest-icon">
+					<div className="icon"><i className={`ra ${currentQuest.icon}`} /></div>
+				</div>
 
+				<div className="section chance-eta">
+					<div className="chance">
+						<span className={currentQuest.successRate >= 0.5 ? "positive" : "negative"}>
+							{Math.floor(currentQuest.successRate * 100)}%
+						</span>&nbsp;Chance
+					</div>
+
+					{questResult !== null &&
+						<div className="message">
+							{questResult && "Quest completed successfully!"}
+							{!questResult && "Quest failed."}
+						</div>
+					}
+
+					{questResult === null &&
+						<div className="eta">
+							00:59:59
+						</div>
+					}
+				</div>
+
+				<div className="section progress">
+					{questResult === null &&
 						<div>
 							<QuestProgressBar value={1} />
 						</div>
-					</div>
-				}
+					}
 
-				{questResult !== null &&
-					<div>
-						<div>
-							{questResult ? "Quest Completed Successfully!" : "Quest Failed!"}
-						</div>
-
+					{questResult !== null &&
 						<div>
 							{questResult && <button type="button" onClick={this.handleGetRewardClick}>Get Reward</button>}
 							{!questResult && <button type="button" onClick={this.handleContinueClick}>Continue</button>}
 						</div>
+					}
+				</div>
 
-						{inventoryError && <div className="error">Inventory is full.</div>}
-					</div>
-				}
+				<div className="section error-message">
+					{questResult !== null && inventoryError && <div className="error">Inventory is full.</div>}
+				</div>
 			</div>
 		);
 	}
