@@ -77,6 +77,7 @@ class VendorService {
 
 		characterService.modifyGold(-item.vendorValue);
 		this._refreshScreenItems();
+		this.save();
 	}
 
 	cheatResetItems() {
