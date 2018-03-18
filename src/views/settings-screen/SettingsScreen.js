@@ -42,7 +42,7 @@ export default class SettingsScreen extends Component {
 
 						<br />
 
-						<div>Version 0.1 (11 Mar 2018)</div>
+						<div>Version 1.0 (18 Mar 2018)</div>
 						<div>by <a target="_blank" rel="noopener noreferrer" href="https://github.com/sergiubucur">Sergiu-Valentin Bucur</a></div>
 					</div>
 				</div>
