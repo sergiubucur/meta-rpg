@@ -11,5 +11,32 @@
 		width: 64px;
 		height: 64px;
 		overflow: hidden;
+
+		&.rarity-common.highlight {
+			animation: highlightCommon 1s ease-in forwards;
+		}
+
+		&.rarity-rare.highlight {
+			animation: highlightRare 1s ease-in forwards;
+		}
+
+		&.rarity-epic.highlight {
+			animation: highlightEpic 1s ease-in forwards;
+		}
 	}
+}
+
+@keyframes highlightCommon {
+	from { box-shadow: 0px 0px 200px 50px rgba(64,202,9,0.75); }
+	to { box-shadow: 0; }
+}
+
+@keyframes highlightRare {
+	from { box-shadow: 0px 0px 200px 50px rgba(17,115,196,0.75); }
+	to { box-shadow: 0; }
+}
+
+@keyframes highlightEpic {
+	from { box-shadow: 0px 0px 200px 50px rgba(145,23,161,0.75); }
+	to { box-shadow: 0; }
 }

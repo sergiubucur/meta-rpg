@@ -11,14 +11,16 @@ export default class InventorySlot extends Component {
 		item: null,
 		onItemDrop: () => {},
 		x: 0,
-		y: 0
+		y: 0,
+		highlight: false
 	}
 
 	static propTypes = {
 		item: PropTypes.object,
 		onItemDrop: PropTypes.func.isRequired,
 		x: PropTypes.number,
-		y: PropTypes.number
+		y: PropTypes.number,
+		highlight: PropTypes.bool
 	}
 
 	handleItemDragStart = (e) => {
@@ -72,9 +74,9 @@ export default class InventorySlot extends Component {
 	}
 
 	render() {
-		const { item } = this.props;
+		const { item, highlight } = this.props;
 		const rarityClass = item ? RarityClass[item.rarity] : undefined;
-		const className = classNames("inventory-slot", { [rarityClass]: rarityClass });
+		const className = classNames("inventory-slot", { [rarityClass]: rarityClass }, { highlight });
 
 		return (
 			<div className={className} onDrop={this.handleDrop} onDragOver={this.handleDragOver}>

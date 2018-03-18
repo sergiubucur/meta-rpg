@@ -24,6 +24,8 @@ class InventoryService {
 		ring: null
 	}
 
+	highlightItem = null;
+
 	constructor() {
 		this.buildMatrix();
 
@@ -172,6 +174,11 @@ class InventoryService {
 		stats.armor += item.armor - gearItem.armor;
 
 		return stats;
+	}
+
+	setHighlightItem(item) {
+		this.highlightItem = item;
+		this.events.dispatch("update");
 	}
 
 	cheatGiveItems() {

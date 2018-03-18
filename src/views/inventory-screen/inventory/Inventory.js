@@ -13,6 +13,7 @@ class Inventory extends Component {
 
 	componentWillUnmount() {
 		inventoryService.events.removeListener("update", this.updateListener);
+		inventoryService.setHighlightItem(null);
 	}
 
 	handleItemDrop = (src, dest) => {
@@ -20,7 +21,7 @@ class Inventory extends Component {
 	}
 
 	render() {
-		const { inventory } = inventoryService;
+		const { inventory, highlightItem } = inventoryService;
 
 		return (
 			<div className="inventory">
@@ -29,6 +30,7 @@ class Inventory extends Component {
 						{row.map((cell, cellIndex) => (
 							<InventorySlot
 								key={cellIndex}
+								highlight={cell !== null && cell === highlightItem}
 								item={cell}
 								x={cellIndex}
 								y={rowIndex}
