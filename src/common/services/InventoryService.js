@@ -61,6 +61,8 @@ class InventoryService {
 	}
 
 	moveItem(src, dest) {
+		this.highlightItem = null;
+
 		if (src.type === "inventory" && dest.type === "inventory") {
 			let aux = this.inventory[src.y][src.x];
 			this.inventory[src.y][src.x] = this.inventory[dest.y][dest.x];
