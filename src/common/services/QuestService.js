@@ -22,7 +22,7 @@ class QuestService {
 	percentComplete = 0;
 	durationLeft = "";
 
-	cheatFastMode = true;
+	cheatSkipTime = true;
 
 	generateQuests() {
 		this.quests.length = 0;
@@ -56,6 +56,11 @@ class QuestService {
 		quest.endDate = this._getQuestEndDate(quest);
 
 		this.currentQuest = quest;
+
+		if (this.cheatSkipTime) {
+			this.completeQuest();
+			return;
+		}
 
 		const timeTracker = new TimeTracker({
 			startDate: quest.startDate,
@@ -104,10 +109,6 @@ class QuestService {
 
 	_getQuestEndDate(quest) {
 		const { level } = quest;
-
-		if (this.cheatFastMode) {
-			return moment().add(3, "seconds").toDate();
-		}
 
 		if (level >= 1 && level <= 3) {
 			return moment().add(1, "minutes").toDate();
