@@ -32,10 +32,19 @@
 			&.dropzone {
 				box-shadow: inset 0px 0px 10px 0px rgba(255,255,255,1);
 			}
+
+			&.notify {
+				animation: navbarNotify 1s ease-in-out infinite alternate;
+			}
 		}
 
 		.vendor-navbar-item {
 			z-index: 10;
 		}
 	}
+}
+
+@keyframes navbarNotify {
+	from { box-shadow: inset 0px 0px 10px 0px rgba(255,255,255,1); }
+	to { box-shadow: inset 0px 0px 25px 0px rgba(255,255,255,1); }
 }

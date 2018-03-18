@@ -21,8 +21,9 @@ class QuestService {
 	questResult = null;
 	percentComplete = 0;
 	durationLeft = "";
+	notify = false;
 
-	cheatSkipTime = true;
+	cheatSkipTime = false;
 
 	generateQuests() {
 		this.quests.length = 0;
@@ -30,6 +31,7 @@ class QuestService {
 		this.questResult = null;
 		this.percentComplete = 0;
 		this.durationLeft = "";
+		this.notify = false;
 
 		const icons = Utils.randomSlice(QuestIcons, 3);
 
@@ -91,6 +93,12 @@ class QuestService {
 	completeQuest() {
 		this.questResult = this._isQuestSuccessful(this.currentQuest);
 
+		this.notify = true;
+		this.events.dispatch("update");
+	}
+
+	stopNotification() {
+		this.notify = false;
 		this.events.dispatch("update");
 	}
 
