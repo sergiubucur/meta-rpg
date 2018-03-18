@@ -7,6 +7,7 @@ import SlotName from "./SlotName";
 import tooltipService from "common/services/ItemTooltipService";
 import characterService from "common/services/CharacterService";
 import inventoryService from "common/services/InventoryService";
+import questService from "common/services/QuestService";
 import { RarityClass } from "common/components/item/ItemRarity";
 
 export default class ItemTooltip extends Component {
@@ -18,11 +19,16 @@ export default class ItemTooltip extends Component {
 		this.characterUpdateListener = characterService.events.addListener("update", () => {
 			this.forceUpdate();
 		});
+
+		this.questUpdateListener = questService.events.addListener("update", () => {
+			this.forceUpdate();
+		});
 	}
 
 	componentWillUnmount() {
 		tooltipService.events.removeListener("update", this.tooltipUpdateListener);
 		characterService.events.removeListener("update", this.characterUpdateListener);
+		questService.events.removeListener("update", this.questUpdateListener);
 	}
 
 	renderWeaponAttributes() {
@@ -109,6 +115,7 @@ export default class ItemTooltip extends Component {
 
 	render() {
 		const { item, source, x, y } = tooltipService;
+		const questActive = questService.currentQuest !== null;
 
 		if (!item) {
 			return null;
@@ -149,6 +156,7 @@ export default class ItemTooltip extends Component {
 
 				{this.renderRequirementsAndValue()}
 				{source !== "gear" && this.renderComparison()}
+				{source === "gear" && questActive && <div className="error">Gear cannot be changed<br />while you're on a quest.</div>}
 			</div>
 		);
 	}

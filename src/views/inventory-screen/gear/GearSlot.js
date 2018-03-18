@@ -5,6 +5,7 @@ import classNames from "classnames";
 import Item from "common/components/item/Item";
 import { RarityClass } from "common/components/item/ItemRarity";
 import inventoryService from "common/services/InventoryService";
+import questService from "common/services/QuestService";
 
 export default class GearSlot extends Component {
 	static defaultProps = {
@@ -39,12 +40,14 @@ export default class GearSlot extends Component {
 		const { item } = this.props;
 		const rarityClass = item ? RarityClass[item.rarity] : undefined;
 		const className = classNames("gear-slot", this.props.slot, { [rarityClass]: rarityClass });
+		const questActive = questService.currentQuest !== null;
 
 		return (
 			<div className={className}>
 				{item &&
 					<Item
 						item={item}
+						draggable={!questActive}
 						onItemDragStart={this.handleItemDragStart}
 						onRightClick={this.handleItemRightClick}
 						source="gear" />}
