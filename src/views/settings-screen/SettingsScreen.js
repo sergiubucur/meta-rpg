@@ -45,9 +45,9 @@ export default class SettingsScreen extends Component {
 						<div>Version 1.0 (18 Mar 2018)</div>
 						<div>by <a target="_blank" rel="noopener noreferrer" href="https://github.com/sergiubucur">Sergiu-Valentin Bucur</a></div>
 
-						<br />
+						<br /><br />
 
-						<div>Source code can be found on <a target="_blank" rel="noopener noreferrer" href="https://github.com/sergiubucur/meta-rpg">GitHub</a></div>
+						<div>Source code can be found on <a target="_blank" rel="noopener noreferrer" href="https://github.com/sergiubucur/meta-rpg">GitHub</a>.</div>
 					</div>
 				</div>
 			</div>
