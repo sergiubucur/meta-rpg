@@ -22,6 +22,8 @@ class QuestService {
 	percentComplete = 0;
 	durationLeft = "";
 
+	cheatFastMode = true;
+
 	generateQuests() {
 		this.quests.length = 0;
 		this.currentQuest = null;
@@ -50,11 +52,14 @@ class QuestService {
 	}
 
 	startQuest(quest) {
+		quest.startDate = moment().toDate();
+		quest.endDate = this._getQuestEndDate(quest);
+
 		this.currentQuest = quest;
 
 		const timeTracker = new TimeTracker({
-			startDate: moment().toDate(),
-			endDate: moment().add(1, "minutes").toDate()
+			startDate: quest.startDate,
+			endDate: quest.endDate
 		}, () => {
 			this.percentComplete = timeTracker.getPercentComplete();
 			this.durationLeft = timeTracker.getDurationLeft();
@@ -95,6 +100,26 @@ class QuestService {
 		}
 
 		return false;
+	}
+
+	_getQuestEndDate(quest) {
+		const { level } = quest;
+
+		if (this.cheatFastMode) {
+			return moment().add(3, "seconds").toDate();
+		}
+
+		if (level >= 1 && level <= 3) {
+			return moment().add(1, "minutes").toDate();
+		}
+		if (level >= 4 && level <= 7) {
+			return moment().add(2, "minutes").toDate();
+		}
+		if (level >= 8 && level <= 10) {
+			return moment().add(3, "minutes").toDate();
+		}
+
+		return moment().add(1, "hours").toDate();
 	}
 
 	_generateQuest(rarity) {
