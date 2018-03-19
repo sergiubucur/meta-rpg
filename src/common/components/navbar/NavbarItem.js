@@ -5,7 +5,7 @@ import classNames from "classnames";
 
 import Utils from "common/Utils";
 
-const NavbarItem = ({ item, routes, router, route, children, cssClass }) => {
+const NavbarItem = ({ item, routes, router, route, children, cssClass, tooltip }) => {
 	const active = Utils.getCurrentRoute(routes) === route;
 	const className = classNames("navbar-item", { active }, { [cssClass]: cssClass });
 
@@ -16,7 +16,7 @@ const NavbarItem = ({ item, routes, router, route, children, cssClass }) => {
 	};
 
 	return (
-		<button type="button" className={className} onClick={handleClick}>
+		<button type="button" className={className} onClick={handleClick} title={tooltip}>
 			{children}
 		</button>
 	);
@@ -24,7 +24,8 @@ const NavbarItem = ({ item, routes, router, route, children, cssClass }) => {
 
 NavbarItem.defaultProps = {
 	cssClass: null,
-	children: null
+	children: null,
+	tooltip: ""
 };
 
 NavbarItem.propTypes = {
@@ -32,7 +33,8 @@ NavbarItem.propTypes = {
 	route: PropTypes.string.isRequired,
 	routes: PropTypes.array.isRequired,
 	router: PropTypes.object.isRequired,
-	children: PropTypes.any
+	children: PropTypes.any,
+	tooltip: PropTypes.string
 };
 
 export default withRouter(NavbarItem);

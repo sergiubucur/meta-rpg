@@ -5,7 +5,7 @@ import App from "./App";
 import InventoryScreen from "views/inventory-screen/InventoryScreen";
 import QuestScreen from "views/quest-screen/QuestScreen";
 import VendorScreen from "views/vendor-screen/VendorScreen";
-import SettingsScreen from "views/settings-screen/SettingsScreen";
+import HelpScreen from "views/help-screen/HelpScreen";
 
 const Routes = () => {
 	return (
@@ -15,7 +15,7 @@ const Routes = () => {
 
 				<Route path="quest" component={QuestScreen} />
 				<Route path="vendor" component={VendorScreen} />
-				<Route path="settings" component={SettingsScreen} />
+				<Route path="help" component={HelpScreen} />
 			</Route>
 		</Router>
 	);

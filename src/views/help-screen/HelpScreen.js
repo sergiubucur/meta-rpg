@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 
-import "./SettingsScreen.less";
+import "./HelpScreen.less";
 import persistenceService from "common/services/PersistenceService";
 
-export default class SettingsScreen extends Component {
+export default class HelpScreen extends Component {
 	handleResetClick = () => {
 		persistenceService.reset();
 		window.location.reload();
@@ -11,11 +11,11 @@ export default class SettingsScreen extends Component {
 
 	render() {
 		return (
-			<div className="settings-screen">
+			<div className="help-screen">
 				<div className="header">
 					<strong>Usage</strong>
 
-					<div>Right-click to equip an item.</div>
+					<div>Right-click or drag and drop to equip an item.</div>
 					<div>CTRL + right-click to sell an item.</div>
 					<div>You can also drag and drop the item on the vendor menu (<i className="fa fa-balance-scale" />) to sell it.</div>
 				</div>
@@ -42,7 +42,7 @@ export default class SettingsScreen extends Component {
 
 						<br />
 
-						<div>Version 1.0 (18 Mar 2018)</div>
+						<div>Version 1.01 (19 Mar 2018)</div>
 						<div>by <a target="_blank" rel="noopener noreferrer" href="https://github.com/sergiubucur">Sergiu-Valentin Bucur</a></div>
 
 						<br /><br />

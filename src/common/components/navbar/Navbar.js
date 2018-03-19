@@ -54,15 +54,15 @@ class Navbar extends Component {
 				<CharacterBar />
 
 				<div className="menu">
-					<NavbarItem route="">
+					<NavbarItem route="" tooltip="Inventory">
 						<i className="ra ra-sword" />
 					</NavbarItem>
-					<NavbarItem route="/quest" cssClass={questClassName}>
+					<NavbarItem route="/quest" cssClass={questClassName} tooltip="Quests">
 						<i className="ra ra-trophy" />
 					</NavbarItem>
 					<VendorNavbarItem />
-					<NavbarItem route="/settings">
-						<i className="fa fa-cogs" />
+					<NavbarItem route="/help" tooltip="Help">
+						<i className="fa fa-question-circle" />
 					</NavbarItem>
 				</div>
 			</div>

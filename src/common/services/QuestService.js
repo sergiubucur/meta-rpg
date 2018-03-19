@@ -249,14 +249,9 @@ class QuestService {
 			}
 		});
 
-		let successRate = 0;
-		if (rate.damage === 1 && rate.armor === 1) {
-			successRate = Object.keys(rate).reduce((a, x) => a + rate[x], 0) / Object.keys(rate).length;
-		}
-
 		return {
 			successRatePerAttribute: rate,
-			successRate,
+			successRate: Object.keys(rate).reduce((a, x) => a + rate[x], 0) / Object.keys(rate).length,
 			currentStats
 		};
 	}

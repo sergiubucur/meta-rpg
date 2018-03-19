@@ -47,7 +47,7 @@ export default class VendorNavbarItem extends Component {
 
 		return (
 			<div className="vendor-navbar-item" onDrop={this.handleDrop} onDragOver={this.handleDragOver}>
-				<NavbarItem route="/vendor" cssClass={dropzone ? "dropzone" : null}>
+				<NavbarItem route="/vendor" cssClass={dropzone ? "dropzone" : null} tooltip="Vendor">
 					<i className="fa fa-balance-scale" />
 				</NavbarItem>
 			</div>
