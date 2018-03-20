@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 import "./HelpScreen.less";
+import Version from "../../Version";
 import persistenceService from "common/services/PersistenceService";
 
 export default class HelpScreen extends Component {
@@ -42,7 +43,7 @@ export default class HelpScreen extends Component {
 
 						<br />
 
-						<div>Version 1.01 (19 Mar 2018)</div>
+						<div>{Version}</div>
 						<div>by <a target="_blank" rel="noopener noreferrer" href="https://github.com/sergiubucur">Sergiu-Valentin Bucur</a></div>
 
 						<br /><br />

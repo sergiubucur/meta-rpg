@@ -164,26 +164,7 @@ class QuestService {
 	_getQuestEndDate(quest) {
 		const { level } = quest;
 
-		if (level === 1) {
-			return moment().add(5, "seconds").toDate();
-		}
-
-		if (level === 2) {
-			return moment().add(30, "seconds").toDate();
-		}
-
-		if (level === 3) {
-			return moment().add(1, "minutes").toDate();
-		}
-
-		if (level >= 4 && level <= 7) {
-			return moment().add(2, "minutes").toDate();
-		}
-		if (level >= 8 && level <= 10) {
-			return moment().add(3, "minutes").toDate();
-		}
-
-		return moment().add(1, "hours").toDate();
+		return moment().add(level * 5, "seconds").toDate();
 	}
 
 	_generateQuest(rarity) {
