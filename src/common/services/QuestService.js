@@ -13,7 +13,7 @@ import QuestIcons from "./data/QuestIcons";
 import TimeTracker from "common/TimeTracker";
 import persistenceService from "./PersistenceService";
 
-const UpdateInterval = 3600;
+const UpdateInterval = 900;
 
 class QuestService {
 	events = new EventDispatcher();
@@ -110,6 +110,7 @@ class QuestService {
 	completeQuest() {
 		this.questResult = this._isQuestSuccessful(this.currentQuest);
 
+		document.title = "*** meta-rpg ***";
 		this.notify = true;
 		this.save();
 		this.events.dispatch("update");

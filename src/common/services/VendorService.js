@@ -11,7 +11,7 @@ import persistenceService from "./PersistenceService";
 
 const ItemCount = 100;
 const ItemsPerPage = 7;
-const UpdateInterval = 3600;
+const UpdateInterval = 900;
 
 class VendorService {
 	events = new EventDispatcher();
@@ -78,6 +78,11 @@ class VendorService {
 		characterService.modifyGold(-item.vendorValue);
 		this._refreshScreenItems();
 		this.save();
+	}
+
+	resetFilters() {
+		this._resetScreenData();
+		this._refreshScreenItems();
 	}
 
 	cheatResetItems() {

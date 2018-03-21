@@ -22,7 +22,7 @@ export default class HelpScreen extends Component {
 				</div>
 
 				<div className="header">
-					<button type="button" onClick={this.handleResetClick}>Reset all data</button>
+					<button type="button" onClick={this.handleResetClick}>Start over</button>
 				</div>
 
 				<div className="header">

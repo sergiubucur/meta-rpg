@@ -18,17 +18,24 @@ export default class VendorScreen extends Component {
 		vendorService.events.removeListener("update", this.updateListener);
 	}
 
+	handleResetFiltersClick = () => {
+		vendorService.resetFilters();
+	}
+
 	render() {
 		const { items, totalCount, sortBy, slot, rarity, hasAttribute, maxPrice, maxLevel, errorMessage } = vendorService.screenData;
 
 		return (
 			<div className="vendor-screen">
 				<div className="filters">
-					<div className="filter">
-						<div className="name">
-						</div>
-						<div className="value">
+					<div className="filter header">
+						<div className="left">
 							Showing {items.length} out of {totalCount} items
+						</div>
+						<div className="right">
+							<button type="button" onClick={this.handleResetFiltersClick}>
+								Clear filters
+							</button>
 						</div>
 					</div>
 
